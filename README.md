@@ -16,13 +16,20 @@ $ git clone https://github.com/arvl130/mmm-ui.git
 $ pnpm install
 ```
 
-3. Run the development server.
+3. Configure the environment variables.
+
+```sh
+$ cp .env.example .env
+$ vi .env # press :wq to exit!
+```
+
+4. Run the development server.
 
 ```sh
 $ pnpm dev
 ```
 
-4. Build for production (optional).
+5. Build for production (optional).
 
 ```sh
 $ pnpm build
