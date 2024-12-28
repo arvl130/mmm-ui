@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+
 export const metadata: Metadata = {
   title: "Meme Manager MMM",
   description: "The majestic meme manager with magical powers!",
