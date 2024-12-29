@@ -1,5 +1,6 @@
 import { Inter, Fira_Mono } from "next/font/google"
 import "./globals.css"
+import { Providers } from "./providers"
 
 const inter = Inter({
   variable: "--font-inter",
@@ -23,7 +24,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${firaMono.variable} font-sans antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   )
