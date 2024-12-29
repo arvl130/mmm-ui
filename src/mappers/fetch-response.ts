@@ -34,7 +34,7 @@ export async function fetchResponseToValidSchema<
     const fetchResult = await fetchResponseToFetchResult(input.response)
 
     throw new HttpError({
-      message: `HTTP Error occured: ${input.response.statusText}.`,
+      message: `HTTP Error occured: ${input.response.statusText === "" ? "empty status text" : input.response.statusText} (code: ${input.response.status}).`,
       body: fetchResult,
       code: input.response.status,
     })
