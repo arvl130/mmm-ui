@@ -59,6 +59,7 @@ export async function signOut() {
 
 export async function getCurrentUser() {
   const response = await fetch("/api/v1/auth/user")
+  console.log("response", response)
 
   return await fetchResponseToValidSchema({
     response,
