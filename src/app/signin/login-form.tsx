@@ -63,18 +63,32 @@ function Success(props: { user: User | null }) {
             return
           }
 
-          const { message, result } = await signIn({
-            username: username.toString(),
-            password: password.toString(),
-          })
+          try {
+            const { message, result } = await signIn({
+              username: username.toString(),
+              password: password.toString(),
+            })
 
-          setUsername("")
-          setPassword("")
+            setUsername("")
+            setPassword("")
 
-          queryClient.setQueryData(["current-user"], result)
-          router.push("/dashboard")
+            queryClient.setQueryData(["current-user"], result)
+            router.push("/dashboard")
 
-          toast(message)
+            toast(message)
+          } catch (e) {
+            if (e instanceof Error) {
+              toast("Error occured", {
+                description: e.message,
+              })
+            } else {
+              toast("Unknown Error occured", {
+                description: "Check the logs for more information.",
+              })
+
+              console.log("Unknown Error occured", e)
+            }
+          }
         }}
       >
         <CardContent className="space-y-4">

@@ -51,9 +51,23 @@ function Success(props: { user: User | null }) {
           <Button
             type="button"
             onClick={async () => {
-              const { message } = await getMemes()
+              try {
+                const { message } = await getMemes()
 
-              toast(message)
+                toast(message)
+              } catch (e) {
+                if (e instanceof Error) {
+                  toast("Error occured", {
+                    description: e.message,
+                  })
+                } else {
+                  toast("Unknown Error occured", {
+                    description: "Check the logs for more information.",
+                  })
+
+                  console.log("Unknown Error occured", e)
+                }
+              }
             }}
           >
             Get memes
