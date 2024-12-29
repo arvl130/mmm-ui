@@ -1,6 +1,7 @@
 import { Inter, Fira_Mono } from "next/font/google"
 import "./globals.css"
 import { Providers } from "./providers"
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({
   variable: "--font-inter",
@@ -25,6 +26,7 @@ export default function RootLayout({
         className={`${inter.variable} ${firaMono.variable} font-sans antialiased`}
       >
         <Providers>{children}</Providers>
+        <Toaster closeButton />
       </body>
     </html>
   )
