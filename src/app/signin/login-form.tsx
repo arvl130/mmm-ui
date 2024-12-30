@@ -5,7 +5,7 @@ import { signIn } from "@/api/auth"
 import type { User } from "@/types/user"
 import { useCurrentUser } from "@/hooks/current-user"
 import { Loader2 } from "lucide-react"
-import { useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import {
   Card,
   CardContent,
@@ -19,12 +19,34 @@ import { Input } from "@/components/ui/input"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { handleErrorWithToast } from "@/lib/error-handling"
 
 function Success(props: { user: User | null }) {
   const queryClient = useQueryClient()
   const router = useRouter()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+
+  const signInMutation = useMutation({
+    mutationFn: async (input: { username: string; password: string }) => {
+      return await signIn({
+        username: input.username,
+        password: input.password,
+      })
+    },
+    onSuccess: (data) => {
+      setUsername("")
+      setPassword("")
+
+      queryClient.setQueryData(["current-user"], data.result)
+      router.push("/dashboard")
+
+      toast(data.message)
+    },
+    onError: (e) => {
+      handleErrorWithToast(e)
+    },
+  })
 
   useEffect(() => {
     if (props.user) router.push("/dashboard")
@@ -63,32 +85,10 @@ function Success(props: { user: User | null }) {
             return
           }
 
-          try {
-            const { message, result } = await signIn({
-              username: username.toString(),
-              password: password.toString(),
-            })
-
-            setUsername("")
-            setPassword("")
-
-            queryClient.setQueryData(["current-user"], result)
-            router.push("/dashboard")
-
-            toast(message)
-          } catch (e) {
-            if (e instanceof Error) {
-              toast("Error occured", {
-                description: e.message,
-              })
-            } else {
-              toast("Unknown Error occured", {
-                description: "Check the logs for more information.",
-              })
-
-              console.log("Unknown Error occured", e)
-            }
-          }
+          signInMutation.mutate({
+            username: username.toString(),
+            password: password.toString(),
+          })
         }}
       >
         <CardContent className="space-y-4">
@@ -118,7 +118,11 @@ function Success(props: { user: User | null }) {
           </div>
         </CardContent>
         <CardFooter>
-          <Button type="submit" className="w-full">
+          <Button
+            type="submit"
+            className="w-full transition-all"
+            disabled={signInMutation.isPending}
+          >
             Sign In
           </Button>
         </CardFooter>

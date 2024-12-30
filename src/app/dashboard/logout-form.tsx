@@ -6,7 +6,7 @@ import { getMemes } from "@/api/meme"
 import type { User } from "@/types/user"
 import { useCurrentUser } from "@/hooks/current-user"
 import { Loader2 } from "lucide-react"
-import { useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import {
   Card,
   CardContent,
@@ -23,6 +23,32 @@ import { handleErrorWithToast } from "@/lib/error-handling"
 function Success(props: { user: User | null }) {
   const router = useRouter()
   const queryClient = useQueryClient()
+  const signOutMutation = useMutation({
+    mutationFn: async () => {
+      return await signOut()
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(["current-user"], null)
+      router.push("/signin")
+
+      toast(data.message)
+    },
+    onError: (e) => {
+      handleErrorWithToast(e)
+    },
+  })
+
+  const getMemesMutation = useMutation({
+    mutationFn: async () => {
+      return await getMemes()
+    },
+    onSuccess: (data) => {
+      toast(data.message)
+    },
+    onError: (e) => {
+      handleErrorWithToast(e)
+    },
+  })
 
   useEffect(() => {
     if (props.user === null) router.push("/signin")
@@ -38,33 +64,20 @@ function Success(props: { user: User | null }) {
         <CardFooter className="space-x-2">
           <Button
             type="button"
-            onClick={async () => {
-              const { message } = await signOut()
-
-              queryClient.setQueryData(["current-user"], null)
-              router.push("/signin")
-
-              toast(message)
+            className="transition-all"
+            disabled={signOutMutation.isPending}
+            onClick={() => {
+              signOutMutation.mutate()
             }}
           >
             Sign Out
           </Button>
           <Button
             type="button"
-            onClick={async () => {
-              try {
-                const { message } = await getMemes()
-
-                toast(message)
-              } catch (e) {
-                if (e instanceof Error) {
-                  toast("Error occured", {
-                    description: e.message,
-                  })
-                } else {
-                  handleErrorWithToast(e)
-                }
-              }
+            className="transition-all"
+            disabled={getMemesMutation.isPending}
+            onClick={() => {
+              getMemesMutation.mutate()
             }}
           >
             Get memes
