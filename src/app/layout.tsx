@@ -26,7 +26,7 @@ export default function RootLayout({
         className={`${inter.variable} ${firaMono.variable} font-sans antialiased`}
       >
         <Providers>{children}</Providers>
-        <Toaster closeButton />
+        <Toaster closeButton position="top-right" />
       </body>
     </html>
   )
