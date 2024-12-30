@@ -18,6 +18,7 @@ import {
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
+import { handleErrorWithToast } from "@/lib/error-handling"
 
 function Success(props: { user: User | null }) {
   const router = useRouter()
@@ -61,11 +62,7 @@ function Success(props: { user: User | null }) {
                     description: e.message,
                   })
                 } else {
-                  toast("Unknown Error occured", {
-                    description: "Check the logs for more information.",
-                  })
-
-                  console.log("Unknown Error occured", e)
+                  handleErrorWithToast(e)
                 }
               }
             }}
