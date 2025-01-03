@@ -10,11 +10,11 @@ const compat = new FlatCompat({
 })
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-  ...compat.extends({
+  ...compat.config({
     rules: {
       "@typescript-eslint/consistent-type-imports": "error",
     },
+    extends: ["next/core-web-vitals", "next/typescript"],
   }),
 ]
 
