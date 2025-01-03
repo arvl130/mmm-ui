@@ -42,7 +42,9 @@ function Success(props: { user: User | null }) {
       queryClient.setQueryData(["current-user"], data.result)
       router.push("/dashboard")
 
-      toast(data.message)
+      toast.success(data.message, {
+        description: "Nice to see you. 😊",
+      })
     },
     onError: (e) => {
       setPassword("")

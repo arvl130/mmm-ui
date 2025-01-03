@@ -31,7 +31,9 @@ function Success(props: { user: User | null }) {
       queryClient.setQueryData(["current-user"], null)
       router.push("/signin")
 
-      toast(data.message)
+      toast.info(data.message, {
+        description: "See ya later! 🐊",
+      })
     },
     onError: (e) => {
       handleErrorWithToast(e)
