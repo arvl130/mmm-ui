@@ -23,7 +23,6 @@ export default function Home() {
           I'm tired of saving random memes and not being able to find them
           later, so I built this app to help me with that.
         </p>
-        <p className="">Perhaps it will be useful to you as well.</p>
         <CallToActionButtons />
       </main>
       <footer className="bg-primary flex justify-center h-16 items-center">
