@@ -54,7 +54,7 @@ function Success(props: { user: User | null }) {
 
   useEffect(() => {
     if (props.user) router.push("/dashboard")
-  }, [props.user])
+  }, [props.user, router])
 
   return (
     <Card className="max-w-md mx-auto">

@@ -1,4 +1,4 @@
-import { Metadata } from "next"
+import type { Metadata } from "next"
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants"
 import { Sidebar } from "./sidebar"
 import { MainContent } from "./main-content"

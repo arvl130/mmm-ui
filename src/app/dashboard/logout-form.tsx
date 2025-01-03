@@ -54,7 +54,7 @@ function Success(props: { user: User | null }) {
 
   useEffect(() => {
     if (props.user === null) router.push("/signin")
-  }, [props.user])
+  }, [props.user, router])
 
   if (props.user) {
     return (

@@ -14,7 +14,7 @@ export function MainContent() {
 
   useEffect(() => {
     if (data === null) router.push("/signin")
-  }, [data])
+  }, [data, router])
 
   if (status === "pending") return <div className="border-l" />
   if (status === "error") return <div className="border-l" />
@@ -30,7 +30,7 @@ export function MainContent() {
           </Link>
         </div>
         <p className="mt-1 text-muted-foreground text-sm">
-          Hello, there. We've been waiting for you.
+          Hello, there. We&apos;ve been waiting for you.
         </p>
       </header>
       <main className="mt-6">

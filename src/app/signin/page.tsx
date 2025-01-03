@@ -1,6 +1,6 @@
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants"
 import { LoginForm } from "./login-form"
-import { Metadata } from "next"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: `Sign In - ${APP_NAME}`,

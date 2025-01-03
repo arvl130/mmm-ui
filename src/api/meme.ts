@@ -1,6 +1,7 @@
 import { z } from "zod"
 import { fetchResponseToValidSchema } from "@/mappers/fetch-response"
-import { MemeSchema, StoreMeme, UpdateMeme } from "@/types/meme"
+import type { StoreMeme, UpdateMeme } from "@/types/meme"
+import { MemeSchema } from "@/types/meme"
 import { getCsrfToken } from "./auth"
 
 export async function getMemes() {
