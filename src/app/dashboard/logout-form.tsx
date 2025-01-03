@@ -92,7 +92,7 @@ function Success(props: { user: User | null }) {
   return (
     <Card className="max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
+        <CardTitle>Welcome</CardTitle>
       </CardHeader>
       <CardContent className="flex">
         <Loader2 className="animate-spin mr-2" /> Loading ...
