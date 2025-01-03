@@ -1,10 +1,11 @@
 import type { Metadata } from "next"
 import { SignInOrDashboardButton } from "./signin-or-dashboard-button"
 import { CallToActionButtons } from "./call-to-action-buttons"
+import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants"
 
 export const metadata: Metadata = {
-  title: "Meme Manager MMM",
-  description: "The majestic meme manager with magical powers!",
+  title: APP_NAME,
+  description: APP_DESCRIPTION,
 }
 
 export default function Home() {
