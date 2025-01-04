@@ -62,7 +62,6 @@ export function Sidebar() {
       </h1>
       <div className="space-y-1">
         <SidebarLink label="Dashboard" path="/dashboard" />
-        <SidebarLink label="Memes" path="/memes" />
         <SidebarLink label="Profile" path="/profile" />
       </div>
       <div className="mt-auto">
