@@ -111,7 +111,7 @@ export function UploadModal({
   })
 
   useEffect(() => {
-    if (!open) {
+    if (open) {
       setKeywords([])
     }
   }, [open])
