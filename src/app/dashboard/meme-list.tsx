@@ -6,12 +6,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import type { Meme } from "@/types/meme"
+import type { Meme as BaseMeme } from "@/types/meme"
 import { Upload, Wind } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
 import { EditMemeModal } from "./edit-meme-modal"
 import { DeleteMemeModal } from "./delete-meme-modal"
+import type { Keyword } from "@/types/keyword"
+import { Badge } from "@/components/ui/badge"
+
+type Meme = BaseMeme & { keywords: Keyword[] }
 
 function MemeCard({ meme }: { meme: Meme }) {
   const [editIsOpen, setEditIsOpen] = useState(false)
@@ -24,14 +28,23 @@ function MemeCard({ meme }: { meme: Meme }) {
           {meme.id}
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex justify-center">
-        <Image
-          src={meme.imgUrl}
-          alt="This is a meme."
-          width={320}
-          height={320}
-          className="size-80 object-cover border"
-        />
+      <CardContent>
+        <div className="flex justify-center">
+          <Image
+            src={meme.imgUrl}
+            alt="This is a meme."
+            width={320}
+            height={320}
+            className="size-80 object-cover border"
+          />
+        </div>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {meme.keywords.map((keyword) => (
+            <Badge key={keyword.id} variant="secondary">
+              {keyword.name}
+            </Badge>
+          ))}
+        </div>
       </CardContent>
       <CardFooter>
         <Button type="button" onClick={() => setEditIsOpen(true)}>

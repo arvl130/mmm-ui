@@ -3,6 +3,7 @@ import { fetchResponseToValidSchema } from "@/mappers/fetch-response"
 import type { StoreMeme, UpdateMeme } from "@/types/meme"
 import { MemeSchema } from "@/types/meme"
 import { getCsrfToken } from "./auth"
+import { KeywordSchema } from "@/types/keyword"
 
 export async function getMemes() {
   const response = await fetch("/api/v1/memes")
@@ -11,7 +12,9 @@ export async function getMemes() {
     response,
     expectedSchema: z.object({
       message: z.string().min(1),
-      result: MemeSchema.array(),
+      result: MemeSchema.extend({
+        keywords: KeywordSchema.array(),
+      }).array(),
     }),
   })
 }
@@ -26,6 +29,7 @@ export async function storeMeme(input: { meme: StoreMeme }) {
     },
     body: JSON.stringify({
       id: input.meme.id,
+      keywords: Array.from(input.meme.keywords),
     }),
   })
 

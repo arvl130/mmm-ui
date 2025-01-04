@@ -6,8 +6,8 @@ import { toast } from "sonner"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { handleErrorWithToast } from "@/lib/error-handling"
 import { storeMeme } from "@/api/meme"
-import { useRef } from "react"
-import { Loader2 } from "lucide-react"
+import { useRef, useState } from "react"
+import { Loader2, Plus, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import {
   Dialog,
@@ -17,6 +17,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Badge } from "@/components/ui/badge"
 
 export function UploadModal({
   open,
@@ -25,28 +27,25 @@ export function UploadModal({
   open: boolean
   onOpenChange: (newIsOpen: boolean) => void
 }) {
-  const queryClient = useQueryClient()
+  const [keywords, setKeywords] = useState<string[]>([])
 
+  const queryClient = useQueryClient()
   const getUrlMutation = useMutation({
     mutationFn: async () => {
       return await getMemeUploadUrl()
     },
     onSuccess: async ({ result: { url, id } }) => {
-      if (inputRef.current === null) {
-        toast.error("No input element.")
-        return
-      }
-
       if (
-        inputRef.current.files === null ||
-        inputRef.current.files.length === 0
+        imageInputRef.current === null ||
+        imageInputRef.current.files === null ||
+        imageInputRef.current.files.length === 0
       ) {
         toast.error("No input files.")
         return
       }
 
       uploadMutation.mutate({
-        file: inputRef.current.files[0],
+        file: imageInputRef.current.files[0],
         url,
         id,
       })
@@ -74,22 +73,24 @@ export function UploadModal({
     onSuccess: async ({ id }) => {
       storeMutation.mutate({
         id,
+        keywords,
       })
     },
     onError: (e) => handleErrorWithToast(e),
   })
 
   const storeMutation = useMutation({
-    mutationFn: async ({ id }: { id: string }) => {
+    mutationFn: async ({ id }: { id: string; keywords: string[] }) => {
       return await storeMeme({
         meme: {
           id,
+          keywords: new Set(keywords),
         },
       })
     },
     onSuccess: ({ message, result: { imgUrl } }) => {
-      if (inputRef.current) {
-        inputRef.current.value = ""
+      if (imageInputRef.current) {
+        imageInputRef.current.value = ""
         queryClient.invalidateQueries({
           queryKey: ["memes"],
         })
@@ -109,31 +110,123 @@ export function UploadModal({
     onError: (e) => handleErrorWithToast(e),
   })
 
-  const inputRef = useRef<null | HTMLInputElement>(null)
+  function onEnterKeyword() {
+    if (isPending) return
+    if (
+      keywordInputRef.current === null ||
+      keywordInputRef.current.value === ""
+    ) {
+      toast.error("You have not entered a keyword.")
+      return
+    }
+
+    setKeywords((prevKeywords) => {
+      if (keywordInputRef.current && keywordInputRef.current.value !== "") {
+        const newKeyword = keywordInputRef.current.value
+        const updatedKeywords = Array.from(
+          new Set([...prevKeywords, newKeyword]),
+        )
+
+        keywordInputRef.current.value = ""
+        return updatedKeywords
+      } else {
+        return prevKeywords
+      }
+    })
+  }
+
+  const keywordInputRef = useRef<null | HTMLInputElement>(null)
+  const imageInputRef = useRef<null | HTMLInputElement>(null)
   const isPending =
     getUrlMutation.isPending ||
     uploadMutation.isPending ||
     storeMutation.isPending
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={(newIsOpen) => {
+        if (!newIsOpen) setKeywords([])
+
+        onOpenChange(newIsOpen)
+      }}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Upload Meme</DialogTitle>
           <DialogDescription>Select a meme to upload.</DialogDescription>
         </DialogHeader>
         <div>
-          <Input
-            ref={inputRef}
-            type="file"
-            accept="image/jpeg,image/jpg,image/png"
-          />
+          <div>
+            <Label>Image</Label>
+            <Input
+              ref={imageInputRef}
+              type="file"
+              accept="image/jpeg,image/jpg,image/png"
+              className="mt-2"
+            />
+          </div>
+          <div className="mt-4 space-y-2">
+            <Label>Tags</Label>
+            {keywords.length === 0 ? (
+              <p className="text-sm">No keywords.</p>
+            ) : (
+              <div className="flex gap-2">
+                {keywords.map((keyword) => (
+                  <Badge
+                    key={keyword}
+                    className="py-1"
+                    onClick={() => {
+                      setKeywords((prevKeywords) => {
+                        return prevKeywords.filter((k) => k !== keyword)
+                      })
+                    }}
+                  >
+                    {keyword}
+                    <X className="ml-1" size={16} />
+                  </Badge>
+                ))}
+              </div>
+            )}
+            <div className="flex items-center gap-x-2">
+              <Input
+                ref={keywordInputRef}
+                type="text"
+                placeholder="Enter a keyword ..."
+                disabled={isPending}
+                onKeyUp={(e) => {
+                  if (e.key === "Enter") onEnterKeyword()
+                }}
+              />
+              <Button
+                type="button"
+                size="icon"
+                variant="outline"
+                disabled={isPending}
+                onClick={onEnterKeyword}
+              >
+                <Plus />
+                <span className="sr-only">Save</span>
+              </Button>
+            </div>
+          </div>
         </div>
         <DialogFooter>
           <Button
             type="button"
             disabled={isPending}
-            onClick={() => getUrlMutation.mutate()}
+            onClick={() => {
+              if (
+                imageInputRef.current === null ||
+                imageInputRef.current.files === null ||
+                imageInputRef.current.files.length === 0
+              ) {
+                toast.error("No input files.")
+                return
+              }
+
+              getUrlMutation.mutate()
+            }}
           >
             {isPending && <Loader2 className="animate-spin mr-1" />} Upload
           </Button>
