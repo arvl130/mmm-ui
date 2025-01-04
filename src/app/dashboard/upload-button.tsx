@@ -94,7 +94,7 @@ export function UploadButton() {
     storeMutation.isPending
 
   return (
-    <>
+    <div className="flex gap-2">
       <Input ref={inputRef} type="file" />
       <Button
         type="button"
@@ -103,6 +103,6 @@ export function UploadButton() {
       >
         {isPending && <Loader2 className="animate-spin mr-1" />} Upload
       </Button>
-    </>
+    </div>
   )
 }

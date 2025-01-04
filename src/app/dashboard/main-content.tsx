@@ -1,13 +1,13 @@
 "use client"
 
-import Link from "next/link"
-import { Button, buttonVariants } from "@/components/ui/button"
-import { Loader2, TriangleAlert, Upload } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Loader2, TriangleAlert } from "lucide-react"
 import { useCurrentUser } from "@/hooks/current-user"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useMemes } from "@/hooks/memes"
 import { MemeList } from "./meme-list"
+import { UploadButton } from "./upload-button"
 
 export function MainContent() {
   const router = useRouter()
@@ -27,9 +27,7 @@ export function MainContent() {
       <header>
         <div className="flex justify-between items-end">
           <h2 className="text-2xl font-semibold">Welcome</h2>
-          <Link href="/memes/create" className={buttonVariants()}>
-            <Upload /> Upload
-          </Link>
+          <UploadButton />
         </div>
         <p className="mt-1 text-muted-foreground text-sm">
           Hello, there. We&apos;ve been waiting for you.
