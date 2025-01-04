@@ -58,3 +58,16 @@ export async function fetchResponseToValidSchema<
     typeof input.expectedSchema
   >
 }
+
+export async function fetchResponseToEmptyOK({
+  response,
+}: {
+  response: Response
+}) {
+  const fetchResult = await fetchResponseToFetchResult(response)
+  if (fetchResult.format !== "empty")
+    throw new UnexpectedFetchResultFormatError({
+      expectedFormat: "empty",
+      received: fetchResult,
+    })
+}

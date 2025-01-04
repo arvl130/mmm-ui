@@ -25,7 +25,7 @@ export async function storeMeme(input: { meme: StoreMeme }) {
       [result.headerName]: result.token,
     },
     body: JSON.stringify({
-      imgUrl: input.meme.imgUrl,
+      id: input.meme.id,
     }),
   })
 
@@ -59,7 +59,7 @@ export async function updateMeme(input: { id: string; meme: UpdateMeme }) {
       [result.headerName]: result.token,
     },
     body: JSON.stringify({
-      imgUrl: input.meme.imgUrl,
+      // There are no fields that we can update at the moment.
     }),
   })
 

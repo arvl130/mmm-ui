@@ -1,15 +1,14 @@
 import { z } from "zod"
 
 export const StoreMemeSchema = z.object({
-  imgUrl: z.string().url(),
+  id: z.string().uuid(),
 })
 
-export const UpdateMemeSchema = z.object({
-  imgUrl: z.string().url(),
-})
+export const UpdateMemeSchema = z.object({})
 
 export const MemeSchema = StoreMemeSchema.extend({
   id: z.string().uuid(),
+  imgUrl: z.string().url(),
 })
 
 export type StoreMeme = z.infer<typeof StoreMemeSchema>
