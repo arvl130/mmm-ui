@@ -123,7 +123,11 @@ export function UploadModal({
           <DialogDescription>Select a meme to upload.</DialogDescription>
         </DialogHeader>
         <div>
-          <Input ref={inputRef} type="file" />
+          <Input
+            ref={inputRef}
+            type="file"
+            accept="image/jpeg,image/jpg,image/png"
+          />
         </div>
         <DialogFooter>
           <Button
