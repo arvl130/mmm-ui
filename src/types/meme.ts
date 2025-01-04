@@ -1,11 +1,12 @@
 import { z } from "zod"
 
-export const StoreMemeSchema = z.object({
-  id: z.string().uuid(),
+export const UpdateMemeSchema = z.object({
   keywords: z.set(z.string().min(1)).nonempty(),
 })
 
-export const UpdateMemeSchema = z.object({})
+export const StoreMemeSchema = UpdateMemeSchema.extend({
+  id: z.string().uuid(),
+})
 
 export const MemeSchema = z.object({
   id: z.string().uuid(),

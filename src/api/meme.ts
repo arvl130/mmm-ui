@@ -63,7 +63,7 @@ export async function updateMeme(input: { id: string; meme: UpdateMeme }) {
       [result.headerName]: result.token,
     },
     body: JSON.stringify({
-      // There are no fields that we can update at the moment.
+      keywords: Array.from(input.meme.keywords),
     }),
   })
 

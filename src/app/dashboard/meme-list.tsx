@@ -57,7 +57,7 @@ function MemeCard({ meme }: { meme: Meme }) {
             setEditIsOpen(false)
             setDeleteIsOpen(true)
           }}
-          memeId={meme.id}
+          meme={meme}
         />
         <DeleteMemeModal
           open={deleteIsOpen}
