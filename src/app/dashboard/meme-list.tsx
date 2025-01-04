@@ -1,7 +1,60 @@
 import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import type { Meme } from "@/types/meme"
 import { Upload, Wind } from "lucide-react"
 import Image from "next/image"
+import { useState } from "react"
+import { EditMemeModal } from "./edit-meme-modal"
+import { DeleteMemeModal } from "./delete-meme-modal"
+
+function MemeCard({ meme }: { meme: Meme }) {
+  const [editIsOpen, setEditIsOpen] = useState(false)
+  const [deleteIsOpen, setDeleteIsOpen] = useState(false)
+
+  return (
+    <Card className="w-96">
+      <CardHeader>
+        <CardTitle className="whitespace-nowrap overflow-x-hidden text-ellipsis">
+          {meme.id}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="flex justify-center">
+        <Image
+          src={meme.imgUrl}
+          alt="This is a meme."
+          width={320}
+          height={320}
+          className="size-80 object-cover border"
+        />
+      </CardContent>
+      <CardFooter>
+        <Button type="button" onClick={() => setEditIsOpen(true)}>
+          Edit
+        </Button>
+        <EditMemeModal
+          open={editIsOpen}
+          onOpenChange={setEditIsOpen}
+          onOpenDeleteModal={() => {
+            setEditIsOpen(false)
+            setDeleteIsOpen(true)
+          }}
+          memeId={meme.id}
+        />
+        <DeleteMemeModal
+          open={deleteIsOpen}
+          onOpenChange={setDeleteIsOpen}
+          memeId={meme.id}
+        />
+      </CardFooter>
+    </Card>
+  )
+}
 
 export function MemeList({
   memes,
@@ -36,15 +89,7 @@ export function MemeList({
   return (
     <div className="mt-4 flex flex-wrap gap-4">
       {memes.map((meme) => (
-        <div key={meme.id}>
-          <Image
-            src={meme.imgUrl}
-            alt={"This is a meme."}
-            width={320}
-            height={320}
-            className="size-80 object-contain border"
-          />
-        </div>
+        <MemeCard key={meme.id} meme={meme} />
       ))}
     </div>
   )
