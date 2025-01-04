@@ -1,11 +1,15 @@
-import { buttonVariants } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import type { Meme } from "@/types/meme"
 import { Upload, Wind } from "lucide-react"
 import Image from "next/image"
-import Link from "next/link"
 
-export function MemeList({ memes }: { memes: Meme[] }) {
+export function MemeList({
+  memes,
+  onOpenUploadModal,
+}: {
+  memes: Meme[]
+  onOpenUploadModal: () => void
+}) {
   if (memes.length === 0)
     return (
       <>
@@ -15,17 +19,16 @@ export function MemeList({ memes }: { memes: Meme[] }) {
             It looks like there are no memes at the moment. Try uploading your
             first meme.
           </p>
-          <Link
-            href="/memes/create"
-            className={cn(
-              buttonVariants({
-                variant: "outline",
-              }),
-              "mt-4",
-            )}
+          <Button
+            type="button"
+            variant="outline"
+            className="mt-4"
+            onClick={() => {
+              onOpenUploadModal()
+            }}
           >
             <Upload /> Upload
-          </Link>
+          </Button>
         </div>
       </>
     )

@@ -3,14 +3,30 @@
 import { Button } from "@/components/ui/button"
 import { getMemeUploadUrl, putObjectToUploadUrl } from "@/api/upload-url"
 import { toast } from "sonner"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { handleErrorWithToast } from "@/lib/error-handling"
 import { storeMeme } from "@/api/meme"
 import { useRef } from "react"
 import { Loader2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
-export function UploadButton() {
+export function UploadModal({
+  open,
+  onOpenChange,
+}: {
+  open: boolean
+  onOpenChange: (newIsOpen: boolean) => void
+}) {
+  const queryClient = useQueryClient()
+
   const getUrlMutation = useMutation({
     mutationFn: async () => {
       return await getMemeUploadUrl()
@@ -72,14 +88,20 @@ export function UploadButton() {
       })
     },
     onSuccess: ({ message, result: { imgUrl } }) => {
+      if (inputRef.current) {
+        inputRef.current.value = ""
+        queryClient.invalidateQueries({
+          queryKey: ["memes"],
+        })
+        onOpenChange(false)
+      }
+
       toast(message, {
         description: `URL: ${imgUrl}`,
         action: {
           label: "Open",
           onClick: () => {
-            const window = open(imgUrl, "_blank")
-
-            if (window) window.focus()
+            window.open(imgUrl, "_blank")?.focus()
           },
         },
       })
@@ -94,15 +116,25 @@ export function UploadButton() {
     storeMutation.isPending
 
   return (
-    <div className="flex gap-2">
-      <Input ref={inputRef} type="file" />
-      <Button
-        type="button"
-        disabled={isPending}
-        onClick={() => getUrlMutation.mutate()}
-      >
-        {isPending && <Loader2 className="animate-spin mr-1" />} Upload
-      </Button>
-    </div>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Upload Meme</DialogTitle>
+          <DialogDescription>Select a meme to upload.</DialogDescription>
+        </DialogHeader>
+        <div>
+          <Input ref={inputRef} type="file" />
+        </div>
+        <DialogFooter>
+          <Button
+            type="button"
+            disabled={isPending}
+            onClick={() => getUrlMutation.mutate()}
+          >
+            {isPending && <Loader2 className="animate-spin mr-1" />} Upload
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }

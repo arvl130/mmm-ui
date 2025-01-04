@@ -3,16 +3,17 @@
 import { Button } from "@/components/ui/button"
 import { Loader2, TriangleAlert } from "lucide-react"
 import { useCurrentUser } from "@/hooks/current-user"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useMemes } from "@/hooks/memes"
 import { MemeList } from "./meme-list"
-import { UploadButton } from "./upload-button"
+import { UploadModal } from "./upload-modal"
 
 export function MainContent() {
   const router = useRouter()
   const { status, data } = useCurrentUser()
   const memes = useMemes()
+  const [uploadIsOpen, setUploadIsOpen] = useState(false)
 
   useEffect(() => {
     if (data === null) router.push("/signin")
@@ -27,7 +28,15 @@ export function MainContent() {
       <header>
         <div className="flex justify-between items-end">
           <h2 className="text-2xl font-semibold">Welcome</h2>
-          <UploadButton />
+          <Button
+            type="button"
+            onClick={() => {
+              setUploadIsOpen(true)
+            }}
+          >
+            Upload
+          </Button>
+          <UploadModal open={uploadIsOpen} onOpenChange={setUploadIsOpen} />
         </div>
         <p className="mt-1 text-muted-foreground text-sm">
           Hello, there. We&apos;ve been waiting for you.
@@ -58,7 +67,14 @@ export function MainContent() {
             </Button>
           </div>
         )}
-        {memes.status === "success" && <MemeList memes={memes.data} />}
+        {memes.status === "success" && (
+          <MemeList
+            memes={memes.data}
+            onOpenUploadModal={() => {
+              setUploadIsOpen(true)
+            }}
+          />
+        )}
       </main>
     </div>
   )
