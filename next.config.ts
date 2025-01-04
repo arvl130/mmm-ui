@@ -11,6 +11,13 @@ const nextConfig: NextConfig = {
       },
     ]
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: serverEnv.ASSET_HOST,
+      },
+    ],
+  },
 }
 
 export default nextConfig

@@ -1,16 +1,18 @@
 "use client"
 
 import Link from "next/link"
-import { buttonVariants } from "@/components/ui/button"
-import { Upload, Wind } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { Button, buttonVariants } from "@/components/ui/button"
+import { Loader2, TriangleAlert, Upload } from "lucide-react"
 import { useCurrentUser } from "@/hooks/current-user"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { useMemes } from "@/hooks/memes"
+import { MemeList } from "./meme-list"
 
 export function MainContent() {
   const router = useRouter()
   const { status, data } = useCurrentUser()
+  const memes = useMemes()
 
   useEffect(() => {
     if (data === null) router.push("/signin")
@@ -38,24 +40,27 @@ export function MainContent() {
         <p className="mt-1 text-muted-foreground text-sm">
           Browse your recently uploaded memes.
         </p>
-        <div className="flex flex-col justify-center items-center pt-24">
-          <Wind className="text-zinc-400" size={128} />
-          <p className="text-muted-foreground mt-4 max-w-sm text-center">
-            It looks like there are no memes at the moment. Try uploading your
-            first meme.
-          </p>
-          <Link
-            href="/memes/create"
-            className={cn(
-              buttonVariants({
-                variant: "outline",
-              }),
-              "mt-4",
-            )}
-          >
-            <Upload /> Upload
-          </Link>
-        </div>
+        {memes.status === "pending" && (
+          <div className="mt-4 flex">
+            <Loader2 className="animate-spin mr-2" /> Loading ...
+          </div>
+        )}
+        {memes.status === "error" && (
+          <div className="mt-4 space-y-2 flex flex-col items-center">
+            <TriangleAlert size={36} />
+            <p>Error occured: {memes.error.message}</p>
+            <Button
+              type="button"
+              disabled={memes.isPending}
+              onClick={() => {
+                memes.refetch()
+              }}
+            >
+              Retry
+            </Button>
+          </div>
+        )}
+        {memes.status === "success" && <MemeList memes={memes.data} />}
       </main>
     </div>
   )
