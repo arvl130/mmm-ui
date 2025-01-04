@@ -26,7 +26,11 @@ export default function RootLayout({
         className={`${inter.variable} ${firaMono.variable} font-sans antialiased`}
       >
         <Providers>{children}</Providers>
-        <Toaster closeButton position="top-right" />
+        <Toaster
+          className="pointer-events-auto"
+          closeButton
+          position="top-right"
+        />
       </body>
     </html>
   )
