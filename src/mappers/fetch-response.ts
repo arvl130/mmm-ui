@@ -15,9 +15,15 @@ async function fetchResponseToFetchResult(
         result: responseJson,
       }
     } catch {
-      return {
-        format: "text",
-        result: responseText,
+      if (responseText === "") {
+        return {
+          format: "empty",
+        }
+      } else {
+        return {
+          format: "text",
+          result: responseText,
+        }
       }
     }
   } catch {
