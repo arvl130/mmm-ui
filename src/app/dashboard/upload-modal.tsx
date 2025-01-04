@@ -6,7 +6,7 @@ import { toast } from "sonner"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { handleErrorWithToast } from "@/lib/error-handling"
 import { storeMeme } from "@/api/meme"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Loader2, Plus, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import {
@@ -110,6 +110,12 @@ export function UploadModal({
     onError: (e) => handleErrorWithToast(e),
   })
 
+  useEffect(() => {
+    if (!open) {
+      setKeywords([])
+    }
+  }, [open])
+
   function onEnterKeyword() {
     if (isPending) return
     if (
@@ -143,14 +149,7 @@ export function UploadModal({
     storeMutation.isPending
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(newIsOpen) => {
-        if (!newIsOpen) setKeywords([])
-
-        onOpenChange(newIsOpen)
-      }}
-    >
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Upload Meme</DialogTitle>
