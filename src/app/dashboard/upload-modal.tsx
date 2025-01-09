@@ -186,7 +186,7 @@ export function UploadModal({
             {keywords.length === 0 ? (
               <p className="text-sm">No keywords.</p>
             ) : (
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 {keywords.map((keyword) => (
                   <Badge
                     key={keyword}
