@@ -118,6 +118,9 @@ export function UploadModal({
       })
     },
     onSuccess: ({ message, reply }) => {
+      setKeywords((prevKeywords) =>
+        Array.from(new Set([...prevKeywords, ...reply])),
+      )
       toast(message, {
         description: reply.join(", "),
       })
