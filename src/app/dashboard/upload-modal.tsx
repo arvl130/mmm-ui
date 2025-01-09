@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { handleErrorWithToast } from "@/lib/error-handling"
 import { storeMeme } from "@/api/meme"
 import { useEffect, useRef, useState } from "react"
-import { Loader2, Plus, X } from "lucide-react"
+import { Loader2, Plus, Sparkles, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import {
   Dialog,
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
+import { getKeywordSuggestions } from "@/api/keyword"
 
 export function UploadModal({
   open,
@@ -110,6 +111,20 @@ export function UploadModal({
     onError: (e) => handleErrorWithToast(e),
   })
 
+  const suggestionMutation = useMutation({
+    mutationFn: async ({ file }: { file: File }) => {
+      return await getKeywordSuggestions({
+        file,
+      })
+    },
+    onSuccess: ({ message, reply }) => {
+      toast(message, {
+        description: reply.join(", "),
+      })
+    },
+    onError: (e) => handleErrorWithToast(e),
+  })
+
   useEffect(() => {
     if (open) {
       setKeywords([])
@@ -144,6 +159,7 @@ export function UploadModal({
   const keywordInputRef = useRef<null | HTMLInputElement>(null)
   const imageInputRef = useRef<null | HTMLInputElement>(null)
   const isPending =
+    suggestionMutation.isPending ||
     getUrlMutation.isPending ||
     uploadMutation.isPending ||
     storeMutation.isPending
@@ -201,6 +217,31 @@ export function UploadModal({
                 type="button"
                 size="icon"
                 variant="outline"
+                className="w-12"
+                disabled={isPending}
+                onClick={() => {
+                  if (
+                    imageInputRef.current === null ||
+                    imageInputRef.current.files === null ||
+                    imageInputRef.current.files.length === 0
+                  ) {
+                    toast.error("No input files.")
+                    return
+                  }
+
+                  suggestionMutation.mutate({
+                    file: imageInputRef.current.files[0],
+                  })
+                }}
+              >
+                <Sparkles />
+                <span className="sr-only">Save</span>
+              </Button>
+              <Button
+                type="button"
+                size="icon"
+                variant="outline"
+                className="w-12"
                 disabled={isPending}
                 onClick={onEnterKeyword}
               >
