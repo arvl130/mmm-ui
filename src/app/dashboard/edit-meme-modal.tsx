@@ -84,7 +84,7 @@ export function EditMemeModal({
 
   useEffect(() => {
     if (open) {
-      meme.keywords.map(({ name }) => name)
+      setKeywords(meme.keywords.map(({ name }) => name))
     }
   }, [open, meme.keywords])
 
