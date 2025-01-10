@@ -7,7 +7,7 @@ import Link from "next/link"
 import { toast } from "sonner"
 
 export function CallToActionButtons() {
-  const { status, data } = useCurrentUser()
+  const { status, data, refetch } = useCurrentUser()
 
   return (
     <div className="flex gap-3">
@@ -32,13 +32,15 @@ export function CallToActionButtons() {
         </span>
       )}
       {status === "error" && (
-        <span
-          className={buttonVariants({
-            className: "opacity-50",
-          })}
+        <Button
+          type="button"
+          className="opacity-50"
+          onClick={() => {
+            refetch()
+          }}
         >
           <TriangleAlert className="mr-1" /> Try it out
-        </span>
+        </Button>
       )}
       {status === "success" && (
         <Link
