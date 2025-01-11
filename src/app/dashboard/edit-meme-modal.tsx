@@ -143,6 +143,7 @@ export function EditMemeModal({
             type="button"
             variant="destructive"
             onClick={() => onOpenDeleteModal()}
+            disabled={isPending}
           >
             Delete
           </Button>
