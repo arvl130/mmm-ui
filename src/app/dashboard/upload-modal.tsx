@@ -166,11 +166,11 @@ export function UploadModal({
 
   const keywordInputRef = useRef<null | HTMLInputElement>(null)
   const imageInputRef = useRef<null | HTMLInputElement>(null)
-  const isPending =
-    suggestionMutation.isPending ||
+  const isUploading =
     getUrlMutation.isPending ||
     uploadMutation.isPending ||
     storeMutation.isPending
+  const isPending = suggestionMutation.isPending || isUploading
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -285,9 +285,7 @@ export function UploadModal({
               getUrlMutation.mutate()
             }}
           >
-            {getUrlMutation.isPending && (
-              <Loader2 className="animate-spin mr-1" />
-            )}
+            {isUploading && <Loader2 className="animate-spin mr-1" />}
             Upload
           </Button>
         </DialogFooter>
