@@ -1,11 +1,16 @@
 import { getMemes } from "@/api/meme"
 import { useQuery } from "@tanstack/react-query"
 
-export function useMemes() {
+export function useMemes({ q }: { q?: string | undefined }) {
   return useQuery({
-    queryKey: ["memes"],
+    queryKey: [
+      "memes",
+      {
+        q,
+      },
+    ],
     queryFn: async () => {
-      const { result } = await getMemes()
+      const { result } = await getMemes({ q })
 
       return result
     },

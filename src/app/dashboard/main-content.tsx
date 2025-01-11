@@ -1,18 +1,15 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Loader2, TriangleAlert } from "lucide-react"
 import { useCurrentUser } from "@/hooks/current-user"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { useMemes } from "@/hooks/memes"
-import { MemeList } from "./meme-list"
 import { UploadModal } from "./upload-modal"
+import { RecentMemes } from "./recent-memes"
 
 export function MainContent() {
   const router = useRouter()
   const { status, data } = useCurrentUser()
-  const memes = useMemes()
   const [uploadIsOpen, setUploadIsOpen] = useState(false)
 
   useEffect(() => {
@@ -43,38 +40,11 @@ export function MainContent() {
         </p>
       </header>
       <main className="mt-6">
-        <h2 className="text-2xl font-semibold">Recent memes</h2>
-        <p className="mt-1 text-muted-foreground text-sm">
-          Browse your recently uploaded memes.
-        </p>
-        {memes.status === "pending" && (
-          <div className="mt-4 flex">
-            <Loader2 className="animate-spin mr-2" /> Loading ...
-          </div>
-        )}
-        {memes.status === "error" && (
-          <div className="mt-4 space-y-2 flex flex-col items-center">
-            <TriangleAlert size={36} />
-            <p>Error occured: {memes.error.message}</p>
-            <Button
-              type="button"
-              disabled={memes.isPending}
-              onClick={() => {
-                memes.refetch()
-              }}
-            >
-              Retry
-            </Button>
-          </div>
-        )}
-        {memes.status === "success" && (
-          <MemeList
-            memes={memes.data}
-            onOpenUploadModal={() => {
-              setUploadIsOpen(true)
-            }}
-          />
-        )}
+        <RecentMemes
+          onOpenUploadModal={() => {
+            setUploadIsOpen(true)
+          }}
+        />
       </main>
     </div>
   )

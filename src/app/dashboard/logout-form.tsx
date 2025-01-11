@@ -42,7 +42,7 @@ function Success(props: { user: User | null }) {
 
   const getMemesMutation = useMutation({
     mutationFn: async () => {
-      return await getMemes()
+      return await getMemes({})
     },
     onSuccess: (data) => {
       toast(data.message)

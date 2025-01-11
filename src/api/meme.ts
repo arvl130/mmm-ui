@@ -5,8 +5,8 @@ import { MemeSchema } from "@/types/meme"
 import { getCsrfToken } from "./auth"
 import { KeywordSchema } from "@/types/keyword"
 
-export async function getMemes() {
-  const response = await fetch("/api/v1/memes")
+export async function getMemes({ q }: { q?: string | undefined }) {
+  const response = await fetch(`/api/v1/memes?q=${q === undefined ? "" : q}`)
 
   return await fetchResponseToValidSchema({
     response,
