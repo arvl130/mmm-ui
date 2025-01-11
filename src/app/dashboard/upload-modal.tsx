@@ -237,7 +237,11 @@ export function UploadModal({
                   })
                 }}
               >
-                <Sparkles />
+                {suggestionMutation.isPending ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <Sparkles />
+                )}
                 <span className="sr-only">Save</span>
               </Button>
               <Button
