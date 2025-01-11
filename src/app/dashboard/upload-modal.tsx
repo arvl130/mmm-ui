@@ -271,7 +271,10 @@ export function UploadModal({
               getUrlMutation.mutate()
             }}
           >
-            {isPending && <Loader2 className="animate-spin mr-1" />} Upload
+            {getUrlMutation.isPending && (
+              <Loader2 className="animate-spin mr-1" />
+            )}
+            Upload
           </Button>
         </DialogFooter>
       </DialogContent>
