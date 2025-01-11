@@ -30,6 +30,7 @@ export default function RootLayout({
           className="pointer-events-auto"
           closeButton
           position="top-right"
+          richColors
         />
       </body>
     </html>
