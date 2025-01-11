@@ -1,3 +1,4 @@
+import { getEditKeywordSuggestions } from "@/api/keyword"
 import { updateMeme } from "@/api/meme"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -14,7 +15,7 @@ import type { Keyword } from "@/types/keyword"
 import type { Meme as BaseMeme } from "@/types/meme"
 import { Label } from "@radix-ui/react-label"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { Loader2, Plus, X } from "lucide-react"
+import { Loader2, Plus, Sparkles, X } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 
@@ -36,7 +37,7 @@ export function EditMemeModal({
   )
 
   const queryClient = useQueryClient()
-  const { isPending, mutate } = useMutation({
+  const updateMutation = useMutation({
     mutationFn: async (input: { keywords: string[] }) => {
       return await updateMeme({
         id: meme.id,
@@ -88,6 +89,30 @@ export function EditMemeModal({
     }
   }, [open, meme.keywords])
 
+  const suggestionMutation = useMutation({
+    mutationFn: async () => {
+      return await getEditKeywordSuggestions({
+        memeId: meme.id,
+      })
+    },
+    onSuccess: ({ message, reply }) => {
+      toast.success(message, {
+        description: `Suggestions: ${reply.join(", ")}`,
+        action: {
+          label: "Use",
+          onClick: () => {
+            setKeywords((prevKeywords) =>
+              Array.from(new Set([...prevKeywords, ...reply])),
+            )
+          },
+        },
+      })
+    },
+    onError: (e) => handleErrorWithToast(e),
+  })
+
+  const isPending = updateMutation.isPending || suggestionMutation.isPending
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -130,6 +155,26 @@ export function EditMemeModal({
               type="button"
               size="icon"
               variant="outline"
+              className="w-12"
+              disabled={isPending}
+              onClick={() => {
+                toast.promise(suggestionMutation.mutateAsync(), {
+                  loading: "AI is thinking ...",
+                })
+              }}
+            >
+              {suggestionMutation.isPending ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                <Sparkles />
+              )}
+              <span className="sr-only">Save</span>
+            </Button>
+            <Button
+              type="button"
+              size="icon"
+              variant="outline"
+              className="w-12"
               disabled={isPending}
               onClick={onEnterKeyword}
             >
@@ -151,12 +196,14 @@ export function EditMemeModal({
             type="button"
             disabled={isPending}
             onClick={() => {
-              mutate({
+              updateMutation.mutate({
                 keywords,
               })
             }}
           >
-            {isPending && <Loader2 className="animate-spin mr-1" />}
+            {updateMutation.isPending && (
+              <Loader2 className="animate-spin mr-1" />
+            )}
             Save
           </Button>
         </DialogFooter>
