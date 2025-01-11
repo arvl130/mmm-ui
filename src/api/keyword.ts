@@ -23,3 +23,19 @@ export async function getKeywordSuggestions({ file }: { file: File }) {
     }),
   })
 }
+
+export async function getEditKeywordSuggestions({
+  memeId,
+}: {
+  memeId: string
+}) {
+  const response = await fetch(`/api/v1/memes/${memeId}/keyword-suggestions`)
+
+  return await fetchResponseToValidSchema({
+    response,
+    expectedSchema: z.object({
+      message: z.string().min(1),
+      reply: z.string().array(),
+    }),
+  })
+}
