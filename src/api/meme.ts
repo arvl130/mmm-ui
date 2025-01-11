@@ -5,8 +5,16 @@ import { MemeSchema } from "@/types/meme"
 import { getCsrfToken } from "./auth"
 import { KeywordSchema } from "@/types/keyword"
 
-export async function getMemes({ q }: { q?: string | undefined }) {
-  const response = await fetch(`/api/v1/memes?q=${q === undefined ? "" : q}`)
+export async function getMemes({
+  q,
+  mode,
+}: {
+  q?: string | undefined
+  mode?: "SIMPLE" | "FULL_TEXT" | "SEMANTIC" | undefined
+}) {
+  const response = await fetch(
+    `/api/v1/memes?q=${q === undefined ? "" : q}&mode=${mode === undefined ? "" : mode}`,
+  )
 
   return await fetchResponseToValidSchema({
     response,
