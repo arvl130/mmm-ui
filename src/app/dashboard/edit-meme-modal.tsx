@@ -95,8 +95,8 @@ export function EditMemeModal({
         memeId: meme.id,
       })
     },
-    onSuccess: ({ message, reply }) => {
-      toast.success(message, {
+    onSuccess: ({ reply }) => {
+      toast.success("AI replied with suggested tags", {
         description: `Suggestions: ${reply.join(", ")}`,
         action: {
           label: "Use",
