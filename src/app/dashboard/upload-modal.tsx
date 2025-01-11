@@ -117,12 +117,17 @@ export function UploadModal({
         file,
       })
     },
-    onSuccess: ({ message, reply }) => {
-      setKeywords((prevKeywords) =>
-        Array.from(new Set([...prevKeywords, ...reply])),
-      )
-      toast(message, {
-        description: reply.join(", "),
+    onSuccess: ({ reply }) => {
+      toast.success("AI replied with suggested tags.", {
+        description: `Suggestions: ${reply.join(", ")}`,
+        action: {
+          label: "Use",
+          onClick: () => {
+            setKeywords((prevKeywords) =>
+              Array.from(new Set([...prevKeywords, ...reply])),
+            )
+          },
+        },
       })
     },
     onError: (e) => handleErrorWithToast(e),
@@ -232,9 +237,14 @@ export function UploadModal({
                     return
                   }
 
-                  suggestionMutation.mutate({
-                    file: imageInputRef.current.files[0],
-                  })
+                  toast.promise(
+                    suggestionMutation.mutateAsync({
+                      file: imageInputRef.current.files[0],
+                    }),
+                    {
+                      loading: "AI is thinking ...",
+                    },
+                  )
                 }}
               >
                 {suggestionMutation.isPending ? (
