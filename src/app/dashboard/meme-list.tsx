@@ -82,8 +82,8 @@ export function MemeList({
         <div className="flex flex-col justify-center items-center pt-24">
           <Wind className="text-zinc-400" size={128} />
           <p className="text-muted-foreground mt-4 max-w-sm text-center">
-            It looks like there are no memes at the moment. Try uploading your
-            first meme.
+            It looks like there are no memes at the moment. Try uploading a
+            meme.
           </p>
           <Button
             type="button"
