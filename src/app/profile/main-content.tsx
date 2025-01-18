@@ -13,6 +13,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { UpdateEmailForm } from "./update-email-form"
+import { UpdateAvatarForm } from "./update-avatar-form"
+import { UpdatePasswordForm } from "./update-password-form"
 
 export function MainContent() {
   const router = useRouter()
@@ -62,7 +65,12 @@ export function MainContent() {
           </div>
         </div>
       </header>
-      <main className="max-w-6xl mx-auto">This is the Profile page.</main>
+      <main className="max-w-3xl mx-auto space-y-6">
+        <h2 className="text-2xl font-semibold">Edit Profile</h2>
+        <UpdateAvatarForm />
+        <UpdateEmailForm />
+        <UpdatePasswordForm />
+      </main>
     </>
   )
 }
