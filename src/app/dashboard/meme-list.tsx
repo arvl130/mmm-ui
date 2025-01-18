@@ -135,6 +135,10 @@ function MemeCard({ meme }: { meme: Meme }) {
       <ShowTagsModal
         open={showTagsIsOpen}
         onOpenChange={setShowTagsIsOpen}
+        onOpenEditModal={() => {
+          setShowTagsIsOpen(false)
+          setEditIsOpen(true)
+        }}
         keywords={meme.keywords}
       />
 

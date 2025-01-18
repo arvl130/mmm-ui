@@ -12,10 +12,12 @@ import type { Keyword } from "@/types/keyword"
 export function ShowTagsModal({
   open,
   onOpenChange,
+  onOpenEditModal,
   keywords,
 }: {
   open: boolean
   onOpenChange: (newIsOpen: boolean) => void
+  onOpenEditModal: () => void
   keywords: Keyword[]
 }) {
   return (
@@ -29,7 +31,7 @@ export function ShowTagsModal({
             <Badge key={keyword.id}>{keyword.name}</Badge>
           ))}
         </div>
-        <DialogFooter>
+        <DialogFooter className="gap-y-2 sm:justify-between">
           <Button
             type="button"
             variant="secondary"
@@ -38,6 +40,15 @@ export function ShowTagsModal({
             }}
           >
             Close
+          </Button>
+
+          <Button
+            type="button"
+            onClick={() => {
+              onOpenEditModal()
+            }}
+          >
+            Edit
           </Button>
         </DialogFooter>
       </DialogContent>
