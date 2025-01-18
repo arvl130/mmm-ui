@@ -29,7 +29,8 @@ export function LogoutButton() {
   return (
     <Button
       type="button"
-      variant="outline"
+      variant="ghost"
+      className="w-full justify-normal px-2"
       disabled={signOutMutation.isPending}
       onClick={() => signOutMutation.mutate()}
     >

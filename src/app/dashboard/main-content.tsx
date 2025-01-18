@@ -8,7 +8,13 @@ import { UploadModal } from "./upload-modal"
 import { RecentMemes } from "./recent-memes"
 import Link from "next/link"
 import { LogoutButton } from "./logout-button"
-import { Upload } from "lucide-react"
+import { CircleUserRound, EllipsisVertical, Upload } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export function MainContent() {
   const router = useRouter()
@@ -31,7 +37,31 @@ export function MainContent() {
             <h1 className="font-semibold">Meme Manager MMM</h1>
           </Link>
           <div className="flex gap-2">
-            <LogoutButton />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button type="button" variant="outline" size="icon">
+                  <EllipsisVertical />
+                  <span className="sr-only">Options</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem asChild>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-normal px-2"
+                    asChild
+                  >
+                    <Link href="/profile">
+                      <CircleUserRound />
+                      Profile
+                    </Link>
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <LogoutButton />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <Button
               type="button"
