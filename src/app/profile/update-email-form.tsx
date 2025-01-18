@@ -9,8 +9,9 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import type { User } from "@/types/user"
 
-export function UpdateEmailForm() {
+export function UpdateEmailForm({ user }: { user: User }) {
   return (
     <Card>
       <CardHeader>
@@ -21,7 +22,7 @@ export function UpdateEmailForm() {
         <CardContent>
           <div className="space-y-2">
             <Label>Email</Label>
-            <Input type="text" value="user@example.com" disabled />
+            <Input type="text" value={user.email} disabled />
           </div>
         </CardContent>
         <CardFooter>

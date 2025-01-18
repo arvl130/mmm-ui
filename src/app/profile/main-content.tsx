@@ -68,7 +68,7 @@ export function MainContent() {
       <main className="max-w-3xl mx-auto space-y-6">
         <h2 className="text-2xl font-semibold">Edit Profile</h2>
         <UpdateAvatarForm />
-        <UpdateEmailForm />
+        <UpdateEmailForm user={data} />
         <UpdatePasswordForm />
       </main>
     </>
