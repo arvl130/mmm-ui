@@ -5,7 +5,7 @@ import { useCurrentUser } from "@/hooks/current-user"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { UploadModal } from "./upload-modal"
-import { RecentMemes } from "./recent-memes"
+import { BrowseMemes } from "./browse-memes"
 import Link from "next/link"
 import { LogoutButton } from "./logout-button"
 import { CircleUserRound, EllipsisVertical, Upload } from "lucide-react"
@@ -77,7 +77,7 @@ export function MainContent() {
         </div>
       </header>
       <main className="max-w-6xl mx-auto">
-        <RecentMemes
+        <BrowseMemes
           onOpenUploadModal={() => {
             setUploadIsOpen(true)
           }}

@@ -10,7 +10,7 @@ import { SearchForm } from "./search-form"
 
 type TSearchMode = "SIMPLE" | "FULL_TEXT" | "SEMANTIC"
 
-export function RecentMemes({
+export function BrowseMemes({
   onOpenUploadModal,
 }: {
   onOpenUploadModal: () => void
@@ -25,9 +25,9 @@ export function RecentMemes({
 
   return (
     <Suspense>
-      <h2 className="text-2xl font-semibold">Recent memes</h2>
+      <h2 className="text-2xl font-semibold">Browse memes</h2>
       <p className="mt-2 text-muted-foreground text-sm">
-        Browse your recently uploaded memes.
+        Here you can view the memes you have uploaded.
       </p>
       <SearchForm />
       {memes.status === "pending" && (
