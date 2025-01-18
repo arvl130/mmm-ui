@@ -16,7 +16,7 @@ export function ViewImageModal({
       <DialogHeader>
         <DialogTitle>Hello</DialogTitle>
       </DialogHeader>
-      <DialogContent className="max-w-[90vw] h-[90vh] p-0">
+      <DialogContent className="max-w-[90vw] h-[90vh] p-0 bg-black/90 [&>button]:text-white">
         <Image
           src={imageUrl}
           alt="This is a meme."
