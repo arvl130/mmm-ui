@@ -1,15 +1,16 @@
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants"
 import type { Metadata } from "next"
+import { MainContent } from "./main-content"
 
 export const metadata: Metadata = {
   title: `Profile - ${APP_NAME}`,
   description: APP_DESCRIPTION,
 }
 
-export default function ProfilePage() {
+export default function DashboardPage() {
   return (
-    <main>
-      <h1>This is the Profile page.</h1>
-    </main>
+    <div className="px-6 pb-12">
+      <MainContent />
+    </div>
   )
 }
