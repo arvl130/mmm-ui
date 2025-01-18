@@ -183,7 +183,7 @@ export function EditMemeModal({
             </Button>
           </div>
         </div>
-        <DialogFooter className="sm:justify-between">
+        <DialogFooter className="gap-2 sm:justify-between">
           <Button
             type="button"
             variant="destructive"
