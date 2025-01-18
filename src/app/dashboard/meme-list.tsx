@@ -1,70 +1,143 @@
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import type { Meme as BaseMeme } from "@/types/meme"
-import { Upload, Wind } from "lucide-react"
+import {
+  Download,
+  MoreVertical,
+  Pencil,
+  Share,
+  Tag,
+  Trash,
+  Upload,
+  Wind,
+} from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
 import { EditMemeModal } from "./edit-meme-modal"
 import { DeleteMemeModal } from "./delete-meme-modal"
 import type { Keyword } from "@/types/keyword"
 import { Badge } from "@/components/ui/badge"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import Link from "next/link"
+import { ShowTagsModal } from "./show-tags-modal"
+import { toast } from "sonner"
 
 type Meme = BaseMeme & { keywords: Keyword[] }
 
 function MemeCard({ meme }: { meme: Meme }) {
   const [editIsOpen, setEditIsOpen] = useState(false)
   const [deleteIsOpen, setDeleteIsOpen] = useState(false)
+  const [showTagsIsOpen, setShowTagsIsOpen] = useState(false)
 
   return (
-    <Card className="w-[min(100%,_24rem)]">
-      <CardHeader>
-        <CardTitle className="whitespace-nowrap overflow-x-hidden text-ellipsis">
-          {meme.id}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex justify-center">
-          <Image
-            src={meme.imgUrl}
-            alt="This is a meme."
-            width={320}
-            height={320}
-            className="size-80 object-contain border"
-          />
-        </div>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {meme.keywords.map((keyword) => (
+    <Card className="overflow-hidden relative group">
+      <CardContent className="p-0 h-full">
+        <Image
+          src={meme.imgUrl}
+          alt="This is a meme."
+          width={320}
+          height={320}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+        <div className="absolute bottom-0 left-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-wrap gap-2 p-2">
+          {meme.keywords.slice(0, 10).map((keyword) => (
             <Badge key={keyword.id} variant="secondary">
               {keyword.name}
             </Badge>
           ))}
         </div>
+        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="bg-white/90 p-1 rounded-full">
+              <MoreVertical className="h-5 w-5 text-gray-700" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem asChild>
+                <Link href={meme.imgUrl} download>
+                  <Download className="mr-2 h-4 w-4" />
+                  <span>Download</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="w-full justify-normal"
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(meme.imgUrl)
+                    toast.success("Copied to Clipboard", {
+                      description:
+                        "The image URL has been copied to clipboard.",
+                    })
+                  }}
+                >
+                  <Share className="mr-2 h-4 w-4" />
+                  <span>Share</span>
+                </Button>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="w-full justify-normal"
+                  onClick={() => setShowTagsIsOpen(true)}
+                >
+                  <Tag className="mr-2 h-4 w-4" />
+                  <span>Tags</span>
+                </Button>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="w-full justify-normal"
+                  onClick={() => setEditIsOpen(true)}
+                >
+                  <Pencil className="mr-2 h-4 w-4" />
+                  <span>Edit</span>
+                </Button>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="w-full justify-normal"
+                  onClick={() => setDeleteIsOpen(true)}
+                >
+                  <Trash className="mr-2 h-4 w-4" />
+                  <span>Delete</span>
+                </Button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </CardContent>
-      <CardFooter>
-        <Button type="button" onClick={() => setEditIsOpen(true)}>
-          Edit
-        </Button>
-        <EditMemeModal
-          open={editIsOpen}
-          onOpenChange={setEditIsOpen}
-          onOpenDeleteModal={() => {
-            setEditIsOpen(false)
-            setDeleteIsOpen(true)
-          }}
-          meme={meme}
-        />
-        <DeleteMemeModal
-          open={deleteIsOpen}
-          onOpenChange={setDeleteIsOpen}
-          memeId={meme.id}
-        />
-      </CardFooter>
+
+      <ShowTagsModal
+        open={showTagsIsOpen}
+        onOpenChange={setShowTagsIsOpen}
+        keywords={meme.keywords}
+      />
+
+      <EditMemeModal
+        open={editIsOpen}
+        onOpenChange={setEditIsOpen}
+        onOpenDeleteModal={() => {
+          setEditIsOpen(false)
+          setDeleteIsOpen(true)
+        }}
+        meme={meme}
+      />
+      <DeleteMemeModal
+        open={deleteIsOpen}
+        onOpenChange={setDeleteIsOpen}
+        memeId={meme.id}
+      />
     </Card>
   )
 }
@@ -100,10 +173,12 @@ export function MemeList({
     )
 
   return (
-    <div className="mt-5 flex flex-wrap gap-4">
-      {memes.map((meme) => (
-        <MemeCard key={meme.id} meme={meme} />
-      ))}
-    </div>
+    <>
+      <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {memes.map((meme) => (
+          <MemeCard key={meme.id} meme={meme} />
+        ))}
+      </div>
+    </>
   )
 }
