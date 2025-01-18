@@ -26,7 +26,7 @@ export function RecentMemes({
   return (
     <Suspense>
       <h2 className="text-2xl font-semibold">Recent memes</h2>
-      <p className="mt-1 text-muted-foreground text-sm">
+      <p className="mt-2 text-muted-foreground text-sm">
         Browse your recently uploaded memes.
       </p>
       <SearchForm />

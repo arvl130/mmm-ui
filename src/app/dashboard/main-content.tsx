@@ -6,6 +6,9 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { UploadModal } from "./upload-modal"
 import { RecentMemes } from "./recent-memes"
+import Link from "next/link"
+import { LogoutButton } from "./logout-button"
+import { Upload } from "lucide-react"
 
 export function MainContent() {
   const router = useRouter()
@@ -21,31 +24,35 @@ export function MainContent() {
   if (data === null) return <div className="border-l" />
 
   return (
-    <div className="border-l px-8 py-6">
-      <header>
-        <div className="flex justify-between items-end">
-          <h2 className="text-2xl font-semibold">Welcome</h2>
-          <Button
-            type="button"
-            onClick={() => {
-              setUploadIsOpen(true)
-            }}
-          >
-            Upload
-          </Button>
-          <UploadModal open={uploadIsOpen} onOpenChange={setUploadIsOpen} />
+    <>
+      <header className="h-20 border-b border-background flex">
+        <div className="max-w-6xl mx-auto w-full flex items-center justify-between">
+          <Link href="/">
+            <h1 className="font-semibold">Meme Manager MMM</h1>
+          </Link>
+          <div className="flex gap-2">
+            <LogoutButton />
+
+            <Button
+              type="button"
+              onClick={() => {
+                setUploadIsOpen(true)
+              }}
+            >
+              <Upload />
+              Upload
+            </Button>
+            <UploadModal open={uploadIsOpen} onOpenChange={setUploadIsOpen} />
+          </div>
         </div>
-        <p className="mt-1 text-muted-foreground text-sm">
-          Hello, there. We&apos;ve been waiting for you.
-        </p>
       </header>
-      <main className="mt-6">
+      <main className="max-w-6xl mx-auto">
         <RecentMemes
           onOpenUploadModal={() => {
             setUploadIsOpen(true)
           }}
         />
       </main>
-    </div>
+    </>
   )
 }

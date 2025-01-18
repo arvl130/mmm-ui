@@ -30,7 +30,7 @@ export function SearchForm() {
 
   return (
     <form
-      className="grid grid-cols-[1fr_auto_auto] gap-2 mt-2"
+      className="grid grid-cols-[auto_1fr_auto] gap-2 mt-3"
       onSubmit={(e) => {
         e.preventDefault()
         router.push(
@@ -51,15 +51,6 @@ export function SearchForm() {
         )
       }}
     >
-      <Input
-        type="search"
-        placeholder="Enter a tag ..."
-        value={searchTerm}
-        onChange={(e) => {
-          setSearchTerm(e.currentTarget.value)
-        }}
-      />
-
       <Tabs
         value={searchMode}
         onValueChange={(value) => {
@@ -72,6 +63,15 @@ export function SearchForm() {
           <TabsTrigger value="FULL_TEXT">Full Text</TabsTrigger>
         </TabsList>
       </Tabs>
+
+      <Input
+        type="search"
+        placeholder="Enter a tag ..."
+        value={searchTerm}
+        onChange={(e) => {
+          setSearchTerm(e.currentTarget.value)
+        }}
+      />
 
       <Button type="submit">Search</Button>
     </form>

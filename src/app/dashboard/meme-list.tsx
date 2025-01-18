@@ -100,7 +100,7 @@ export function MemeList({
     )
 
   return (
-    <div className="mt-4 flex flex-wrap gap-4">
+    <div className="mt-5 flex flex-wrap gap-4">
       {memes.map((meme) => (
         <MemeCard key={meme.id} meme={meme} />
       ))}
