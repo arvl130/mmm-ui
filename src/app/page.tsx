@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { SignInOrDashboardButton } from "./signin-or-dashboard-button"
 import { CallToActionButtons } from "./call-to-action-buttons"
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants"
+import { Footer } from "./footer"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -27,11 +28,7 @@ export default function Home() {
         </p>
         <CallToActionButtons />
       </main>
-      <footer className="bg-primary flex justify-center h-16 items-center">
-        <p className="text-primary-foreground text-sm font-semibold">
-          Angelo Geulin &copy; 2025
-        </p>
-      </footer>
+      <Footer />
     </div>
   )
 }

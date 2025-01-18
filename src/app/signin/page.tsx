@@ -1,6 +1,7 @@
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants"
 import { LoginForm } from "./login-form"
 import type { Metadata } from "next"
+import { Footer } from "../footer"
 
 export const metadata: Metadata = {
   title: `Sign In - ${APP_NAME}`,
@@ -9,8 +10,11 @@ export const metadata: Metadata = {
 
 export default function SignInPage() {
   return (
-    <main className="pt-24">
-      <LoginForm />
-    </main>
+    <div className="min-h-screen grid grid-rows-[1fr_auto]">
+      <main className="pt-24">
+        <LoginForm />
+      </main>
+      <Footer />
+    </div>
   )
 }
