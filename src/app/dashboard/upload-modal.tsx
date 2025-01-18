@@ -105,7 +105,7 @@ export function UploadModal({
           onClick: async () => {
             await navigator.clipboard.writeText(imgUrl)
             toast.success("Copied to Clipboard", {
-              description: "The image URL has been copied to clipboard.",
+              description: "The image URL has been copied to the clipboard.",
             })
           },
         },

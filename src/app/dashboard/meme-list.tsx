@@ -74,7 +74,8 @@ function MemeCard({ meme }: { meme: Meme }) {
                 onSelect={async () => {
                   await navigator.clipboard.writeText(meme.imgUrl)
                   toast.success("Copied to Clipboard", {
-                    description: "The image URL has been copied to clipboard.",
+                    description:
+                      "The image URL has been copied to the clipboard.",
                   })
                 }}
               >
