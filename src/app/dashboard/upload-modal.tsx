@@ -233,7 +233,12 @@ export function UploadModal({
                     imageInputRef.current.files === null ||
                     imageInputRef.current.files.length === 0
                   ) {
-                    toast.error("No input files.")
+                    toast.error("No input file.")
+                    return
+                  }
+
+                  if (imageInputRef.current.files.length > 1) {
+                    toast.error("Too many files selected.")
                     return
                   }
 
@@ -278,7 +283,12 @@ export function UploadModal({
                 imageInputRef.current.files === null ||
                 imageInputRef.current.files.length === 0
               ) {
-                toast.error("No input files.")
+                toast.error("No input file.")
+                return
+              }
+
+              if (imageInputRef.current.files.length > 1) {
+                toast.error("Too many files selected.")
                 return
               }
 
