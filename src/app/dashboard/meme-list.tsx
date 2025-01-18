@@ -22,7 +22,7 @@ function MemeCard({ meme }: { meme: Meme }) {
   const [deleteIsOpen, setDeleteIsOpen] = useState(false)
 
   return (
-    <Card className="w-96">
+    <Card className="w-[min(100%,_24rem)]">
       <CardHeader>
         <CardTitle className="whitespace-nowrap overflow-x-hidden text-ellipsis">
           {meme.id}
@@ -35,7 +35,7 @@ function MemeCard({ meme }: { meme: Meme }) {
             alt="This is a meme."
             width={320}
             height={320}
-            className="size-80 object-cover border"
+            className="size-80 object-contain border"
           />
         </div>
         <div className="mt-2 flex flex-wrap gap-2">

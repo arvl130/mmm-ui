@@ -30,7 +30,7 @@ export function SearchForm() {
 
   return (
     <form
-      className="grid grid-cols-[auto_1fr_auto] gap-2 mt-3"
+      className="grid sm:grid-cols-[auto_1fr_auto] gap-2 mt-3"
       onSubmit={(e) => {
         e.preventDefault()
         router.push(

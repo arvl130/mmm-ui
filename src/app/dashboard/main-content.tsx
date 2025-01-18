@@ -31,8 +31,8 @@ export function MainContent() {
 
   return (
     <>
-      <header className="h-20 border-b border-background flex">
-        <div className="max-w-6xl mx-auto w-full flex items-center justify-between">
+      <header className="sm:h-20 py-4 sm:py-0 border-b border-background flex">
+        <div className="max-w-6xl mx-auto w-full flex flex-col gap-y-4 sm:gap-y-0 sm:flex-row sm:items-center sm:justify-between">
           <Link href="/">
             <h1 className="font-semibold">Meme Manager MMM</h1>
           </Link>

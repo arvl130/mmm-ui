@@ -18,8 +18,10 @@ export default function Home() {
         </div>
       </header>
       <main className="flex flex-col gap-y-6 justify-center items-center">
-        <p className="text-6xl font-semibold">MMM Manages Memes</p>
-        <p className="text-2xl max-w-3xl text-center leading-normal">
+        <p className="px-3 text-lg sm:text-6xl font-semibold">
+          MMM Manages Memes
+        </p>
+        <p className="px-3 sm:text-2xl max-w-3xl text-center leading-normal">
           I&apos;m tired of saving random memes and not being able to find them
           later, so I built this app to help me with that.
         </p>
