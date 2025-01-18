@@ -99,11 +99,14 @@ export function UploadModal({
       }
 
       toast(message, {
-        description: `URL: ${imgUrl}`,
+        description: `Uploaded to URL: ${imgUrl}`,
         action: {
-          label: "Open",
-          onClick: () => {
-            window.open(imgUrl, "_blank")?.focus()
+          label: "Copy",
+          onClick: async () => {
+            await navigator.clipboard.writeText(imgUrl)
+            toast.success("Copied to Clipboard", {
+              description: "The image URL has been copied to clipboard.",
+            })
           },
         },
       })
