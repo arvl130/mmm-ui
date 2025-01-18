@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { toast } from "sonner"
 
 export function UpdateAvatarForm() {
   return (
@@ -17,7 +18,14 @@ export function UpdateAvatarForm() {
         <CardTitle>Update Avatar</CardTitle>
         <CardDescription>Here you can update your avatar.</CardDescription>
       </CardHeader>
-      <form>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          toast.warning("Not Yet Implemented", {
+            description: "This feature is not yet implemented.",
+          })
+        }}
+      >
         <CardContent>
           <div className="space-y-2">
             <Label>Avatar</Label>
