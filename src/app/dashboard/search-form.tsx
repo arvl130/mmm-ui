@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Search } from "lucide-react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useState } from "react"
 
@@ -73,7 +74,9 @@ export function SearchForm() {
         }}
       />
 
-      <Button type="submit">Search</Button>
+      <Button type="submit">
+        <Search /> Search
+      </Button>
     </form>
   )
 }
