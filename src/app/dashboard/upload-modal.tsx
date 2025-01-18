@@ -233,12 +233,17 @@ export function UploadModal({
                     imageInputRef.current.files === null ||
                     imageInputRef.current.files.length === 0
                   ) {
-                    toast.error("No input file.")
+                    toast.error("No file selected", {
+                      description:
+                        "An input file is required to generate AI tag suggestions.",
+                    })
                     return
                   }
 
                   if (imageInputRef.current.files.length > 1) {
-                    toast.error("Too many files selected.")
+                    toast.error("Too many files selected.", {
+                      description: "Please select only one file.",
+                    })
                     return
                   }
 
@@ -283,12 +288,16 @@ export function UploadModal({
                 imageInputRef.current.files === null ||
                 imageInputRef.current.files.length === 0
               ) {
-                toast.error("No input file.")
+                toast.error("No file selected", {
+                  description: "An input file is required to upload a meme.",
+                })
                 return
               }
 
               if (imageInputRef.current.files.length > 1) {
-                toast.error("Too many files selected.")
+                toast.error("Too many files selected.", {
+                  description: "Please select only one file.",
+                })
                 return
               }
 
