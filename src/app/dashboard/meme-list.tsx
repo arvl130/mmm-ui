@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import type { Meme as BaseMeme } from "@/types/meme"
 import {
   Download,
+  Maximize,
   MoreVertical,
   Pencil,
   Share,
@@ -26,6 +27,7 @@ import {
 import Link from "next/link"
 import { ShowTagsModal } from "./show-tags-modal"
 import { toast } from "sonner"
+import { ViewImageModal } from "./view-image-modal"
 
 type Meme = BaseMeme & { keywords: Keyword[] }
 
@@ -33,6 +35,7 @@ function MemeCard({ meme }: { meme: Meme }) {
   const [editIsOpen, setEditIsOpen] = useState(false)
   const [deleteIsOpen, setDeleteIsOpen] = useState(false)
   const [showTagsIsOpen, setShowTagsIsOpen] = useState(false)
+  const [viewImageIsOpen, setViewImageIsOpen] = useState(false)
 
   return (
     <Card className="overflow-hidden relative group">
@@ -57,6 +60,10 @@ function MemeCard({ meme }: { meme: Meme }) {
               <MoreVertical className="h-5 w-5 text-gray-700" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              <DropdownMenuItem onSelect={() => setViewImageIsOpen(true)}>
+                <Maximize className="mr-2 h-4 w-4" />
+                <span>Open</span>
+              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href={meme.imgUrl} download>
                   <Download className="mr-2 h-4 w-4" />
@@ -118,6 +125,13 @@ function MemeCard({ meme }: { meme: Meme }) {
         </div>
       </CardContent>
 
+      <ViewImageModal
+        isOpen={viewImageIsOpen}
+        onClose={() => {
+          setViewImageIsOpen(false)
+        }}
+        imageUrl={meme.imgUrl}
+      />
       <ShowTagsModal
         open={showTagsIsOpen}
         onOpenChange={setShowTagsIsOpen}
