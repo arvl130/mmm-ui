@@ -70,55 +70,28 @@ function MemeCard({ meme }: { meme: Meme }) {
                   <span>Download</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="w-full justify-normal"
-                  onClick={async () => {
-                    await navigator.clipboard.writeText(meme.imgUrl)
-                    toast.success("Copied to Clipboard", {
-                      description:
-                        "The image URL has been copied to clipboard.",
-                    })
-                  }}
-                >
-                  <Share className="mr-2 h-4 w-4" />
-                  <span>Share</span>
-                </Button>
+              <DropdownMenuItem
+                onSelect={async () => {
+                  await navigator.clipboard.writeText(meme.imgUrl)
+                  toast.success("Copied to Clipboard", {
+                    description: "The image URL has been copied to clipboard.",
+                  })
+                }}
+              >
+                <Share className="mr-2 h-4 w-4" />
+                <span>Share</span>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="w-full justify-normal"
-                  onClick={() => setShowTagsIsOpen(true)}
-                >
-                  <Tag className="mr-2 h-4 w-4" />
-                  <span>Tags</span>
-                </Button>
+              <DropdownMenuItem onSelect={() => setShowTagsIsOpen(true)}>
+                <Tag className="mr-2 h-4 w-4" />
+                <span>Tags</span>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="w-full justify-normal"
-                  onClick={() => setEditIsOpen(true)}
-                >
-                  <Pencil className="mr-2 h-4 w-4" />
-                  <span>Edit</span>
-                </Button>
+              <DropdownMenuItem onSelect={() => setEditIsOpen(true)}>
+                <Pencil className="mr-2 h-4 w-4" />
+                <span>Edit</span>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="w-full justify-normal"
-                  onClick={() => setDeleteIsOpen(true)}
-                >
-                  <Trash className="mr-2 h-4 w-4" />
-                  <span>Delete</span>
-                </Button>
+              <DropdownMenuItem onSelect={() => setDeleteIsOpen(true)}>
+                <Trash className="mr-2 h-4 w-4" />
+                <span>Delete</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
