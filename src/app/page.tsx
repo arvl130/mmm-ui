@@ -19,7 +19,7 @@ export default function Home() {
         </div>
       </header>
       <main className="flex flex-col gap-y-6 justify-center items-center">
-        <p className="px-3 text-lg sm:text-6xl font-semibold">
+        <p className="px-3 text-lg text-center sm:text-6xl font-semibold">
           MMM Manages Memes
         </p>
         <p className="px-3 sm:text-2xl max-w-3xl text-center leading-normal">
