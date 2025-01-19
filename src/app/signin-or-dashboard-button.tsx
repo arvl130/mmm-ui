@@ -2,7 +2,14 @@
 
 import { Button, buttonVariants } from "@/components/ui/button"
 import { useCurrentUser } from "@/hooks/current-user"
-import { ChevronRight, Loader2, TriangleAlert } from "lucide-react"
+import { cn } from "@/lib/utils"
+import {
+  ChevronRight,
+  CircleUserRound,
+  LayoutDashboard,
+  Loader2,
+  TriangleAlert,
+} from "lucide-react"
 import Link from "next/link"
 
 export function SignInOrDashboardButton() {
@@ -12,11 +19,11 @@ export function SignInOrDashboardButton() {
     return (
       <span
         className={buttonVariants({
-          variant: "outline",
-          className: "opacity-50",
+          className: "opacity-50 h-9 w-9 sm:w-auto",
         })}
       >
-        <Loader2 className="mr-1 animate-spin" /> Loading
+        <Loader2 className="sm:mr-1 animate-spin" />
+        <span className="hidden sm:inline">Loading</span>
       </span>
     )
 
@@ -25,25 +32,38 @@ export function SignInOrDashboardButton() {
       <Button
         type="button"
         variant="outline"
-        className="opacity-50"
+        className="opacity-50 h-9 w-9 sm:w-auto"
         onClick={() => {
           refetch()
         }}
       >
-        <TriangleAlert className="mr-1" /> Error
+        <TriangleAlert className="sm:mr-1" />
+        <span className="hidden sm:inline">Error</span>
       </Button>
     )
 
   if (data === null)
     return (
-      <Link href="/signin" className={buttonVariants()}>
-        Sign In <ChevronRight />
+      <Link
+        href="/signin"
+        className={cn(buttonVariants(), "h-9 w-9 sm:w-auto")}
+      >
+        <span className="hidden sm:inline-flex items-center gap-x-1">
+          Sign In <ChevronRight />
+        </span>
+        <CircleUserRound className="sm:hidden" />
       </Link>
     )
 
   return (
-    <Link href="/dashboard" className={buttonVariants()}>
-      Dashboard <ChevronRight />
+    <Link
+      href="/dashboard"
+      className={cn(buttonVariants(), "h-9 w-9 sm:w-auto")}
+    >
+      <span className="hidden sm:inline-flex items-center gap-x-1">
+        Dashboard <ChevronRight />
+      </span>
+      <LayoutDashboard className="sm:hidden" />
     </Link>
   )
 }
