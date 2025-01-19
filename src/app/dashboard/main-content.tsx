@@ -2,13 +2,12 @@
 
 import { Button } from "@/components/ui/button"
 import { useCurrentUser } from "@/hooks/current-user"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { UploadModal } from "./upload-modal"
 import { BrowseMemes } from "./browse-memes"
 import Link from "next/link"
 import { LogoutButton } from "./logout-button"
-import { CircleUserRound, Upload } from "lucide-react"
+import { CircleUserRound } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,7 +20,6 @@ import { usernameToInitials } from "@/mappers/username"
 export function MainContent() {
   const router = useRouter()
   const { status, data } = useCurrentUser()
-  const [uploadIsOpen, setUploadIsOpen] = useState(false)
 
   useEffect(() => {
     if (data === null) router.push("/signin")
@@ -72,26 +70,11 @@ export function MainContent() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-
-            <Button
-              type="button"
-              onClick={() => {
-                setUploadIsOpen(true)
-              }}
-            >
-              <Upload />
-              Upload
-            </Button>
-            <UploadModal open={uploadIsOpen} onOpenChange={setUploadIsOpen} />
           </div>
         </div>
       </header>
       <main className="max-w-6xl mx-auto">
-        <BrowseMemes
-          onOpenUploadModal={() => {
-            setUploadIsOpen(true)
-          }}
-        />
+        <BrowseMemes />
       </main>
     </>
   )

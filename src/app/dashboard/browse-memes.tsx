@@ -1,20 +1,18 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Loader2, TriangleAlert } from "lucide-react"
-import { Suspense } from "react"
+import { Loader2, TriangleAlert, Upload } from "lucide-react"
+import { Suspense, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { useMemes } from "@/hooks/memes"
 import { MemeList } from "./meme-list"
 import { SearchForm } from "./search-form"
+import { UploadModal } from "./upload-modal"
 
 type TSearchMode = "SIMPLE" | "FULL_TEXT" | "SEMANTIC"
 
-export function BrowseMemes({
-  onOpenUploadModal,
-}: {
-  onOpenUploadModal: () => void
-}) {
+export function BrowseMemes() {
+  const [uploadIsOpen, setUploadIsOpen] = useState(false)
   const searchParams = useSearchParams()
   const searchTerm = searchParams.get("q")
   const searchMode = searchParams.get("mode")
@@ -25,7 +23,19 @@ export function BrowseMemes({
 
   return (
     <Suspense>
-      <h2 className="text-2xl font-semibold">Browse memes</h2>
+      <div className="sm:flex justify-between space-y-2">
+        <h2 className="text-2xl font-semibold">Browse memes</h2>
+        <Button
+          type="button"
+          onClick={() => {
+            setUploadIsOpen(true)
+          }}
+        >
+          <Upload />
+          Upload
+        </Button>
+        <UploadModal open={uploadIsOpen} onOpenChange={setUploadIsOpen} />
+      </div>
       <p className="mt-2 text-muted-foreground text-sm">
         Here you can view the memes you have uploaded.
       </p>
@@ -51,7 +61,12 @@ export function BrowseMemes({
         </div>
       )}
       {memes.status === "success" && (
-        <MemeList memes={memes.data} onOpenUploadModal={onOpenUploadModal} />
+        <MemeList
+          memes={memes.data}
+          onOpenUploadModal={() => {
+            setUploadIsOpen(true)
+          }}
+        />
       )}
     </Suspense>
   )
