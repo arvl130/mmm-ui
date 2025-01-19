@@ -21,6 +21,7 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { handleErrorWithToast } from "@/lib/error-handling"
 import Link from "next/link"
+import { HttpError } from "@/errors/http"
 
 function Success(props: { user: User | null }) {
   const queryClient = useQueryClient()
@@ -48,7 +49,13 @@ function Success(props: { user: User | null }) {
     },
     onError: (e) => {
       setPassword("")
-      handleErrorWithToast(e)
+      if (e instanceof HttpError && e.code === 403) {
+        toast.error("Incorrect username or password.", {
+          description: "Please enter the correct credentials.",
+        })
+      } else {
+        handleErrorWithToast(e)
+      }
     },
   })
 
