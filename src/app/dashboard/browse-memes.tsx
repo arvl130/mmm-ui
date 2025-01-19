@@ -41,12 +41,12 @@ export function BrowseMemes() {
       </p>
       <SearchForm />
       {memes.status === "pending" && (
-        <div className="mt-4 flex">
+        <div className="mt-24 space-y-2 flex justify-center items-center">
           <Loader2 className="animate-spin mr-2" /> Loading ...
         </div>
       )}
       {memes.status === "error" && (
-        <div className="mt-4 space-y-2 flex flex-col items-center">
+        <div className="mt-24 space-y-2 flex flex-col items-center">
           <TriangleAlert size={36} />
           <p>Error occured: {memes.error.message}</p>
           <Button
