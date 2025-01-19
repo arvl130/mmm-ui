@@ -14,6 +14,7 @@ import { HttpError } from "@/errors/http"
 import { handleErrorWithToast } from "@/lib/error-handling"
 import type { User } from "@/types/user"
 import { useMutation } from "@tanstack/react-query"
+import { Loader2 } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
 
@@ -76,6 +77,7 @@ export function UpdateEmailForm({ user }: { user: User }) {
         </CardContent>
         <CardFooter>
           <Button type="submit" disabled={isPending}>
+            {isPending && <Loader2 className="animate-spin mr-1" />}
             Save
           </Button>
         </CardFooter>
