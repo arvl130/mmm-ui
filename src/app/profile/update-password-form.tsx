@@ -69,7 +69,7 @@ export function UpdatePasswordForm() {
             null === newPassword ||
             newPassword.toString() === ""
           ) {
-            toast.error("Please enter an email.")
+            toast.error("Please enter a password.")
             return
           }
 
