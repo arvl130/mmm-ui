@@ -111,3 +111,39 @@ export async function updateCurrentUserPassword(input: {
     }),
   })
 }
+
+export async function storeCurrentUserAvatar() {
+  const { result: csrfToken } = await getCsrfToken()
+
+  const response = await fetch("/api/v1/auth/user/avatar", {
+    method: "POST",
+    headers: {
+      [csrfToken.headerName]: csrfToken.token,
+    },
+  })
+
+  return await fetchResponseToValidSchema({
+    response,
+    expectedSchema: z.object({
+      message: z.string().min(1),
+    }),
+  })
+}
+
+export async function destroyCurrentUserAvatar() {
+  const { result: csrfToken } = await getCsrfToken()
+
+  const response = await fetch("/api/v1/auth/user/avatar", {
+    method: "DELETE",
+    headers: {
+      [csrfToken.headerName]: csrfToken.token,
+    },
+  })
+
+  return await fetchResponseToValidSchema({
+    response,
+    expectedSchema: z.object({
+      message: z.string().min(1),
+    }),
+  })
+}
