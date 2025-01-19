@@ -68,3 +68,46 @@ export async function getCurrentUser() {
     }),
   })
 }
+
+export async function updateCurrentUserEmail(input: { newEmail: string }) {
+  const { result: csrfToken } = await getCsrfToken()
+
+  const response = await fetch("/api/v1/auth/user/email", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      [csrfToken.headerName]: csrfToken.token,
+    },
+    body: JSON.stringify(input),
+  })
+
+  return await fetchResponseToValidSchema({
+    response,
+    expectedSchema: z.object({
+      message: z.string().min(1),
+    }),
+  })
+}
+
+export async function updateCurrentUserPassword(input: {
+  oldPassword: string
+  newPassword: string
+}) {
+  const { result: csrfToken } = await getCsrfToken()
+
+  const response = await fetch("/api/v1/auth/user/password", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      [csrfToken.headerName]: csrfToken.token,
+    },
+    body: JSON.stringify(input),
+  })
+
+  return await fetchResponseToValidSchema({
+    response,
+    expectedSchema: z.object({
+      message: z.string().min(1),
+    }),
+  })
+}
