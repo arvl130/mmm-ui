@@ -8,13 +8,15 @@ import { UploadModal } from "./upload-modal"
 import { BrowseMemes } from "./browse-memes"
 import Link from "next/link"
 import { LogoutButton } from "./logout-button"
-import { CircleUserRound, EllipsisVertical, Upload } from "lucide-react"
+import { CircleUserRound, Upload } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { usernameToInitials } from "@/mappers/username"
 
 export function MainContent() {
   const router = useRouter()
@@ -39,10 +41,18 @@ export function MainContent() {
           <div className="flex gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button type="button" variant="outline" size="icon">
-                  <EllipsisVertical />
-                  <span className="sr-only">Options</span>
-                </Button>
+                {data.avatarUrl === null ? (
+                  <div className="bg-muted size-9 border flex items-center justify-center rounded-full">
+                    {usernameToInitials(data.email)}
+                  </div>
+                ) : (
+                  <Avatar className="size-9">
+                    <AvatarImage src={data.avatarUrl} />
+                    <AvatarFallback>
+                      {usernameToInitials(data.email)}
+                    </AvatarFallback>
+                  </Avatar>
+                )}
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem asChild>

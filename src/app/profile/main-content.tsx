@@ -6,7 +6,7 @@ import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { LogoutButton } from "../dashboard/logout-button"
-import { EllipsisVertical, LayoutDashboard } from "lucide-react"
+import { LayoutDashboard } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +16,8 @@ import {
 import { UpdateEmailForm } from "./update-email-form"
 import { UpdateAvatarForm } from "./update-avatar-form"
 import { UpdatePasswordForm } from "./update-password-form"
+import { usernameToInitials } from "@/mappers/username"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export function MainContent() {
   const router = useRouter()
@@ -39,10 +41,18 @@ export function MainContent() {
           <div className="flex gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button type="button" variant="outline" size="icon">
-                  <EllipsisVertical />
-                  <span className="sr-only">Options</span>
-                </Button>
+                {data.avatarUrl === null ? (
+                  <div className="bg-muted size-9 border flex items-center justify-center rounded-full">
+                    {usernameToInitials(data.email)}
+                  </div>
+                ) : (
+                  <Avatar className="size-9">
+                    <AvatarImage src={data.avatarUrl} />
+                    <AvatarFallback>
+                      {usernameToInitials(data.email)}
+                    </AvatarFallback>
+                  </Avatar>
+                )}
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem asChild>
