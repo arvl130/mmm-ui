@@ -35,6 +35,8 @@ export function UpdatePasswordForm() {
     },
     onSuccess: ({ message }) => {
       toast.success(message)
+      setOldPassword("")
+      setNewPassword("")
     },
     onError: (e) => {
       if (e instanceof HttpError && e.code === 400) {
