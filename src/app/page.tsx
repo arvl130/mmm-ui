@@ -3,6 +3,7 @@ import { SignInOrDashboardButton } from "./signin-or-dashboard-button"
 import { CallToActionButtons } from "./call-to-action-buttons"
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants"
 import { Footer } from "./footer"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -14,7 +15,9 @@ export default function Home() {
     <div className="min-h-svh grid grid-rows-[auto_1fr_auto]">
       <header className="h-20 border-b px-6">
         <div className="max-w-6xl mx-auto w-full h-full flex justify-between items-center">
-          <h1 className="font-semibold">Meme Manager MMM</h1>
+          <Link href="/">
+            <h1 className="font-semibold">Meme Manager MMM</h1>
+          </Link>
           <SignInOrDashboardButton />
         </div>
       </header>
