@@ -79,7 +79,7 @@ export function UpdatePasswordForm() {
           })
         }}
       >
-        <CardContent>
+        <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label>Old Password</Label>
             <Input
