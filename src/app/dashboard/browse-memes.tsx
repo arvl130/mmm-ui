@@ -23,7 +23,7 @@ export function BrowseMemes() {
 
   return (
     <Suspense>
-      <div className="sm:flex justify-between space-y-2">
+      <div className="sm:flex justify-between space-y-2 sm:space-y-0">
         <h2 className="text-2xl font-semibold">Browse memes</h2>
         <Button
           type="button"
