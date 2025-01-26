@@ -13,7 +13,7 @@ export function SearchForm() {
   const searchParams = useSearchParams()
   const [searchTerm, setSearchTerm] = useState(searchParams.get("q") ?? "")
   const [searchMode, setSearchMode] = useState<TSearchMode>(
-    (searchParams.get("mode") as TSearchMode) ?? "SIMPLE",
+    (searchParams.get("mode") as TSearchMode) ?? "SEMANTIC",
   )
 
   const createQueryString = useCallback(
@@ -59,8 +59,8 @@ export function SearchForm() {
         }}
       >
         <TabsList>
-          <TabsTrigger value="SIMPLE">Simple</TabsTrigger>
           <TabsTrigger value="SEMANTIC">AI</TabsTrigger>
+          <TabsTrigger value="SIMPLE">Simple</TabsTrigger>
           <TabsTrigger value="FULL_TEXT">Full Text</TabsTrigger>
         </TabsList>
       </Tabs>
