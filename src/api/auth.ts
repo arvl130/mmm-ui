@@ -36,6 +36,30 @@ export async function signIn(input: { username: string; password: string }) {
   })
 }
 
+export async function signUp(input: {
+  name: string
+  username: string
+  password: string
+}) {
+  const { result: csrfToken } = await getCsrfToken()
+
+  const response = await fetch("/api/v1/auth/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      [csrfToken.headerName]: csrfToken.token,
+    },
+    body: JSON.stringify(input),
+  })
+
+  return await fetchResponseToValidSchema({
+    response,
+    expectedSchema: z.object({
+      message: z.string().min(1),
+    }),
+  })
+}
+
 export async function signOut() {
   const { result: csrfToken } = await getCsrfToken()
 

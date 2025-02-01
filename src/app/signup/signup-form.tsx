@@ -1,11 +1,11 @@
 "use client"
 
 import { Button, buttonVariants } from "@/components/ui/button"
-import { signIn } from "@/api/auth"
+import { signUp } from "@/api/auth"
 import type { User } from "@/types/user"
 import { useCurrentUser } from "@/hooks/current-user"
 import { ChevronLeft, Loader2 } from "lucide-react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import {
   Card,
   CardContent,
@@ -24,34 +24,34 @@ import Link from "next/link"
 import { HttpError } from "@/errors/http"
 
 function Success(props: { user: User | null }) {
-  const queryClient = useQueryClient()
   const router = useRouter()
+  const [name, setName] = useState("")
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
-  const signInMutation = useMutation({
-    mutationFn: async (input: { username: string; password: string }) => {
-      return await signIn({
-        username: input.username,
-        password: input.password,
-      })
+  const signUpMutation = useMutation({
+    mutationFn: async (input: {
+      name: string
+      username: string
+      password: string
+    }) => {
+      return await signUp(input)
     },
     onSuccess: (data) => {
       setUsername("")
       setPassword("")
 
-      queryClient.setQueryData(["current-user"], data.result)
-      router.push("/dashboard")
+      router.push("/signin")
 
       toast.success(data.message, {
-        description: "Nice to see you. 😊",
+        description: "You may now login to your account.",
       })
     },
     onError: (e) => {
       setPassword("")
-      if (e instanceof HttpError && e.code === 403) {
-        toast.error("Incorrect username or password.", {
-          description: "Please enter the correct credentials.",
+      if (e instanceof HttpError && e.code === 412) {
+        toast.error("Precondition failed", {
+          description: "This email is already taken. Please use another email.",
         })
       } else {
         handleErrorWithToast(e)
@@ -66,10 +66,10 @@ function Success(props: { user: User | null }) {
   return (
     <Card className="max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
+        <CardTitle>Sign Up</CardTitle>
         {props.user === null && (
           <CardDescription>
-            Enter your credentials to access your account.
+            Enter the following details to create an account.
           </CardDescription>
         )}
       </CardHeader>
@@ -78,21 +78,35 @@ function Success(props: { user: User | null }) {
           onSubmit={async (e) => {
             e.preventDefault()
             const formData = new FormData(e.currentTarget)
+            const name = formData.get("name")
             const username = formData.get("username")
             const password = formData.get("password")
 
-            if (username === null || password === null) {
+            if (name === null || username === null || password === null) {
               toast("Username or password is empty.")
               return
             }
 
-            signInMutation.mutate({
+            signUpMutation.mutate({
+              name: name.toString(),
               username: username.toString(),
               password: password.toString(),
             })
           }}
         >
           <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="username">Name</Label>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="username">Username</Label>
               <Input
@@ -117,24 +131,14 @@ function Success(props: { user: User | null }) {
                 required
               />
             </div>
-            <p className="text-sm">
-              Don&apos;t have an account yet?{" "}
-              <Link
-                href="/signup"
-                className="font-medium underline underline-offset-4"
-              >
-                Create an account
-              </Link>{" "}
-              instead.
-            </p>
           </CardContent>
           <CardFooter className="flex-col gap-2">
             <Button
               type="submit"
               className="w-full transition-all"
-              disabled={signInMutation.isPending}
+              disabled={signUpMutation.isPending}
             >
-              {signInMutation.isPending && <Loader2 className="animate-spin" />}
+              {signUpMutation.isPending && <Loader2 className="animate-spin" />}
               Sign In
             </Button>
             <Link
@@ -157,14 +161,14 @@ function Success(props: { user: User | null }) {
   )
 }
 
-export function LoginForm() {
+export function SignUpForm() {
   const { status, data, error } = useCurrentUser()
 
   if (status === "pending")
     return (
       <Card className="max-w-md mx-auto">
         <CardHeader>
-          <CardTitle>Login</CardTitle>
+          <CardTitle>Sign up</CardTitle>
         </CardHeader>
         <CardContent className="flex">
           <Loader2 className="animate-spin mr-2" /> Loading ...
@@ -176,7 +180,7 @@ export function LoginForm() {
     return (
       <Card className="max-w-md mx-auto">
         <CardHeader>
-          <CardTitle>Login</CardTitle>
+          <CardTitle>Sign up</CardTitle>
         </CardHeader>
         <CardContent>Error occured: {error.message}</CardContent>
       </Card>
