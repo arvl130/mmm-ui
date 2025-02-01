@@ -142,13 +142,13 @@ function Success(props: { user: User | null }) {
               Sign Up
             </Button>
             <Link
-              href="/"
+              href="/signin"
               className={buttonVariants({
                 variant: "ghost",
                 className: "w-full",
               })}
             >
-              <ChevronLeft /> Back to home page
+              <ChevronLeft /> Back to Login page
             </Link>
           </CardFooter>
         </form>
