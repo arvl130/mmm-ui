@@ -139,7 +139,7 @@ function Success(props: { user: User | null }) {
               disabled={signUpMutation.isPending}
             >
               {signUpMutation.isPending && <Loader2 className="animate-spin" />}
-              Sign In
+              Sign Up
             </Button>
             <Link
               href="/"
