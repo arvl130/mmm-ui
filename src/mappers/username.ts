@@ -3,4 +3,5 @@ export function usernameToInitials(name: string) {
     .split(" ")
     .map((n) => n[0])
     .join("")
+    .toUpperCase()
 }
