@@ -93,6 +93,16 @@ function Success(props: { user: User | null }) {
           }}
         >
           <CardContent className="space-y-4">
+            <p className="text-sm">
+              Don&apos;t have an account yet?{" "}
+              <Link
+                href="/signup"
+                className="font-medium underline underline-offset-4"
+              >
+                Create an account
+              </Link>{" "}
+              instead.
+            </p>
             <div className="space-y-2">
               <Label htmlFor="username">Username</Label>
               <Input
@@ -116,17 +126,15 @@ function Success(props: { user: User | null }) {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <div className="text-sm flex justify-end">
+                <Link
+                  href="/forgot-password"
+                  className="font-medium hover:underline underline-offset-4"
+                >
+                  Forgot password?
+                </Link>
+              </div>
             </div>
-            <p className="text-sm">
-              Don&apos;t have an account yet?{" "}
-              <Link
-                href="/signup"
-                className="font-medium underline underline-offset-4"
-              >
-                Create an account
-              </Link>{" "}
-              instead.
-            </p>
           </CardContent>
           <CardFooter className="flex-col gap-2">
             <Button
