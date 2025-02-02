@@ -31,7 +31,7 @@ export function PasswordResetLinkForm() {
       setEmail("")
 
       toast.success(data.message, {
-        description: "Password reset link has been sent.",
+        description: "Your password reset link has been sent.",
       })
     },
     onError: (e) => {
