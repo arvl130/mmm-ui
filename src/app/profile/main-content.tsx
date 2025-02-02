@@ -43,13 +43,13 @@ export function MainContent() {
               <DropdownMenuTrigger asChild>
                 {data.avatarUrl === null ? (
                   <div className="bg-muted size-9 border flex items-center justify-center rounded-full">
-                    {usernameToInitials(data.email)}
+                    {usernameToInitials(data.name)}
                   </div>
                 ) : (
                   <Avatar className="size-9">
                     <AvatarImage src={data.avatarUrl} />
                     <AvatarFallback>
-                      {usernameToInitials(data.email)}
+                      {usernameToInitials(data.name)}
                     </AvatarFallback>
                   </Avatar>
                 )}
