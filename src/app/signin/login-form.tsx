@@ -38,7 +38,7 @@ function Success(props: { user: User | null }) {
       setPassword("")
 
       queryClient.setQueryData(["current-user"], data.result)
-      router.push("/dashboard")
+      router.replace("/dashboard")
 
       toast.success(data.message, {
         description: "Nice to see you. 😊",
@@ -57,7 +57,7 @@ function Success(props: { user: User | null }) {
   })
 
   useEffect(() => {
-    if (props.user) router.push("/dashboard")
+    if (props.user) router.replace("/dashboard")
   }, [props.user, router])
 
   return (
