@@ -15,7 +15,7 @@ export async function getCsrfToken() {
   })
 }
 
-export async function signIn(input: { username: string; password: string }) {
+export async function signIn(input: { email: string; password: string }) {
   const { result: csrfToken } = await getCsrfToken()
 
   const response = await fetch("/api/v1/auth/signin", {
@@ -38,7 +38,7 @@ export async function signIn(input: { username: string; password: string }) {
 
 export async function signUp(input: {
   name: string
-  username: string
+  email: string
   password: string
 }) {
   const { result: csrfToken } = await getCsrfToken()

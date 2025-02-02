@@ -26,19 +26,19 @@ import { HttpError } from "@/errors/http"
 function Success(props: { user: User | null }) {
   const router = useRouter()
   const [name, setName] = useState("")
-  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
   const signUpMutation = useMutation({
     mutationFn: async (input: {
       name: string
-      username: string
+      email: string
       password: string
     }) => {
       return await signUp(input)
     },
     onSuccess: (data) => {
-      setUsername("")
+      setEmail("")
       setPassword("")
 
       router.push("/signin")
@@ -79,24 +79,24 @@ function Success(props: { user: User | null }) {
             e.preventDefault()
             const formData = new FormData(e.currentTarget)
             const name = formData.get("name")
-            const username = formData.get("username")
+            const email = formData.get("email")
             const password = formData.get("password")
 
-            if (name === null || username === null || password === null) {
-              toast("Username or password is empty.")
+            if (name === null || email === null || password === null) {
+              toast("Email or password is empty.")
               return
             }
 
             signUpMutation.mutate({
               name: name.toString(),
-              username: username.toString(),
+              email: email.toString(),
               password: password.toString(),
             })
           }}
         >
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username">Name</Label>
+              <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
                 name="name"
@@ -108,14 +108,14 @@ function Success(props: { user: User | null }) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
-                id="username"
-                name="username"
-                type="text"
-                placeholder="Enter your username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>

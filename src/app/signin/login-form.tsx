@@ -26,18 +26,15 @@ import { HttpError } from "@/errors/http"
 function Success(props: { user: User | null }) {
   const queryClient = useQueryClient()
   const router = useRouter()
-  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
   const signInMutation = useMutation({
-    mutationFn: async (input: { username: string; password: string }) => {
-      return await signIn({
-        username: input.username,
-        password: input.password,
-      })
+    mutationFn: async (input: { email: string; password: string }) => {
+      return await signIn(input)
     },
     onSuccess: (data) => {
-      setUsername("")
+      setEmail("")
       setPassword("")
 
       queryClient.setQueryData(["current-user"], data.result)
@@ -50,7 +47,7 @@ function Success(props: { user: User | null }) {
     onError: (e) => {
       setPassword("")
       if (e instanceof HttpError && e.code === 403) {
-        toast.error("Incorrect username or password.", {
+        toast.error("Incorrect email or password.", {
           description: "Please enter the correct credentials.",
         })
       } else {
@@ -78,16 +75,16 @@ function Success(props: { user: User | null }) {
           onSubmit={async (e) => {
             e.preventDefault()
             const formData = new FormData(e.currentTarget)
-            const username = formData.get("username")
+            const email = formData.get("email")
             const password = formData.get("password")
 
-            if (username === null || password === null) {
-              toast("Username or password is empty.")
+            if (email === null || password === null) {
+              toast("Email or password is empty.")
               return
             }
 
             signInMutation.mutate({
-              username: username.toString(),
+              email: email.toString(),
               password: password.toString(),
             })
           }}
@@ -104,14 +101,14 @@ function Success(props: { user: User | null }) {
               instead.
             </p>
             <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
-                id="username"
-                name="username"
+                id="email"
+                name="email"
                 type="text"
-                placeholder="Enter your username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
