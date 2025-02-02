@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label"
 import { HttpError } from "@/errors/http"
 import { handleErrorWithToast } from "@/lib/error-handling"
 import { useMutation } from "@tanstack/react-query"
-import { ChevronLeft, Loader2 } from "lucide-react"
+import { ChevronLeft, Eye, EyeOff, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -23,6 +23,7 @@ import { toast } from "sonner"
 
 export function PasswordResetForm({ token }: { token: string }) {
   const router = useRouter()
+  const [showPassword, setShowPassword] = useState(false)
   const [newPassword, setNewPassword] = useState("")
 
   const resetPasswordMutation = useMutation({
@@ -81,15 +82,33 @@ export function PasswordResetForm({ token }: { token: string }) {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="new-password">New Password</Label>
-            <Input
-              id="new-password"
-              name="new-password"
-              type="password"
-              placeholder="Enter your new password ..."
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
+            <div className="relative">
+              <Input
+                id="new-password"
+                name="new-password"
+                type="password"
+                placeholder="Enter your new password ..."
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                onClick={() => setShowPassword((curr) => !curr)}
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+                <span className="sr-only">
+                  {showPassword ? "Hide password" : "Show password"}
+                </span>
+              </Button>
+            </div>
           </div>
         </CardContent>
         <CardFooter className="flex-col gap-2">

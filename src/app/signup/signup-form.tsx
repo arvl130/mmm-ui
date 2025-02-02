@@ -4,7 +4,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { signUp } from "@/api/auth"
 import type { User } from "@/types/user"
 import { useCurrentUser } from "@/hooks/current-user"
-import { ChevronLeft, Loader2 } from "lucide-react"
+import { ChevronLeft, Eye, EyeOff, Loader2 } from "lucide-react"
 import { useMutation } from "@tanstack/react-query"
 import {
   Card,
@@ -25,6 +25,7 @@ import { HttpError } from "@/errors/http"
 
 function Success(props: { user: User | null }) {
   const router = useRouter()
+  const [showPassword, setShowPassword] = useState(false)
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -121,15 +122,33 @@ function Success(props: { user: User | null }) {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                  onClick={() => setShowPassword((curr) => !curr)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                  <span className="sr-only">
+                    {showPassword ? "Hide password" : "Show password"}
+                  </span>
+                </Button>
+              </div>
             </div>
           </CardContent>
           <CardFooter className="flex-col gap-2">

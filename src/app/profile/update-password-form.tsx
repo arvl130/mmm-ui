@@ -13,11 +13,13 @@ import { Label } from "@/components/ui/label"
 import { HttpError } from "@/errors/http"
 import { handleErrorWithToast } from "@/lib/error-handling"
 import { useMutation } from "@tanstack/react-query"
-import { Loader2 } from "lucide-react"
+import { Eye, EyeOff, Loader2 } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
 
 export function UpdatePasswordForm() {
+  const [showOldPassword, setShowOldPassword] = useState(false)
+  const [showNewPassword, setShowNewPassword] = useState(false)
   const [oldPassword, setOldPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
 
@@ -82,25 +84,62 @@ export function UpdatePasswordForm() {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label>Old Password</Label>
-            <Input
-              type="password"
-              name="old-password"
-              value={oldPassword}
-              onChange={(e) => {
-                setOldPassword(e.currentTarget.value)
-              }}
-            />
+            <div className="relative">
+              <Input
+                type={showOldPassword ? "text" : "password"}
+                name="old-password"
+                value={oldPassword}
+                onChange={(e) => {
+                  setOldPassword(e.currentTarget.value)
+                }}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                onClick={() => setShowOldPassword((curr) => !curr)}
+              >
+                {showOldPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+                <span className="sr-only">
+                  {showOldPassword ? "Hide password" : "Show password"}
+                </span>
+              </Button>
+            </div>
           </div>
           <div className="space-y-2">
-            <Label>New Password</Label>
-            <Input
-              type="password"
-              name="new-password"
-              value={newPassword}
-              onChange={(e) => {
-                setNewPassword(e.currentTarget.value)
-              }}
-            />
+            <Label htmlFor="new-password">New Password</Label>
+            <div className="relative">
+              <Input
+                id="new-password"
+                type={showNewPassword ? "text" : "password"}
+                name="new-password"
+                value={newPassword}
+                onChange={(e) => {
+                  setNewPassword(e.currentTarget.value)
+                }}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                onClick={() => setShowNewPassword((curr) => !curr)}
+              >
+                {showNewPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+                <span className="sr-only">
+                  {showNewPassword ? "Hide password" : "Show password"}
+                </span>
+              </Button>
+            </div>
           </div>
         </CardContent>
         <CardFooter>
