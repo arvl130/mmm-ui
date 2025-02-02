@@ -171,3 +171,44 @@ export async function destroyCurrentUserAvatar() {
     }),
   })
 }
+
+export async function sendPasswordResetLink(input: { email: string }) {
+  const { result: csrfToken } = await getCsrfToken()
+  const response = await fetch("/api/v1/auth/password-reset-link", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      [csrfToken.headerName]: csrfToken.token,
+    },
+    body: JSON.stringify(input),
+  })
+
+  return await fetchResponseToValidSchema({
+    response,
+    expectedSchema: z.object({
+      message: z.string().min(1),
+    }),
+  })
+}
+
+export async function resetPassword(input: {
+  token: string
+  newPassword: string
+}) {
+  const { result: csrfToken } = await getCsrfToken()
+  const response = await fetch("/api/v1/auth/reset-password", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      [csrfToken.headerName]: csrfToken.token,
+    },
+    body: JSON.stringify(input),
+  })
+
+  return await fetchResponseToValidSchema({
+    response,
+    expectedSchema: z.object({
+      message: z.string().min(1),
+    }),
+  })
+}
